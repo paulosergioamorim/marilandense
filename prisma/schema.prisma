@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  name         String
+  phone        String
+  address      String
+  passwordHash String
+  refreshToken String
+  role         UserRole
+  shops        Shop[]
+  sales        Sale[]
+  reviews      Review[]
+}
+
+model Tag {
+  id    String @id @default(uuid())
+  title String @unique
+  shops Shop[]
+}
+
+model Shop {
+  id          String     @id @default(uuid())
+  name        String
+  description String
+  address     String
+  userId      String
+  owner       User       @relation(fields: [userId], references: [id])
+  tags        Tag[]
+  products    Product[]
+  status      ShopStatus @default(PENDING)
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  price       Float
+  avaliable   Int
+  shopId      String
+  imageUrl    String
+  shop        Shop     @relation(fields: [shopId], references: [id])
+  sales       Sale[]
+  reviews     Review[]
+}
+
+model Sale {
+  productId String
+  userId    String
+  amount    Int
+  product   Product    @relation(fields: [productId], references: [id])
+  buyer     User       @relation(fields: [userId], references: [id])
+  status    SaleStatus @default(PENDING)
+
+  @@id([productId, userId])
+}
+
+model Review {
+  productId String
+  userId    String
+  title     String
+  content   String
+  feedback  Int
+  product   Product @relation(fields: [productId], references: [id])
+  owner     User    @relation(fields: [userId], references: [id])
+
+  @@id([productId, userId])
+}
+
+enum UserRole {
+  CUSTOMER
+  SELLER
+  ADMIN
+}
+
+enum ShopStatus {
+  PENDING
+  APPROVED
+  NOT_APPROVED
+}
+
+enum SaleStatus {
+  PENDING
+  APPROVED
+  SENT
+  DELIVERED
+  CANCELED
+}
