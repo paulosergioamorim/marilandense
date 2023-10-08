@@ -25,9 +25,10 @@ model User {
 }
 
 model Tag {
-  id    String @id @default(uuid())
-  title String @unique
-  shops Shop[]
+  id       String    @id @default(uuid())
+  title    String    @unique
+  shops    Shop[]
+  products Product[]
 }
 
 model Shop {
@@ -49,7 +50,9 @@ model Product {
   price       Float
   avaliable   Int
   shopId      String
-  imageUrl    String
+  imageUrl    String?
+  tagId       String
+  tag         Tag      @relation(fields: [tagId], references: [id])
   shop        Shop     @relation(fields: [shopId], references: [id])
   sales       Sale[]
   reviews     Review[]

@@ -1,21 +1,38 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { rolesMap } from '$lib/utils';
+	import Modal from './Modal.svelte';
 	import SignedIn from './SignedIn.svelte';
 	import SignedOut from './SignedOut.svelte';
 
 	const items = [
 		{ name: 'Home', href: '/' },
-		{ name: 'Conta', href: '/dashboard' },
 		{ name: 'Lojas', href: '/shops' },
-		{ name: 'Sobre', href: '/about' },
-		{ name: 'Carrinho', href: '/cart' }
+		{ name: 'Produtos', href: '/products'},
+		{ name: 'Carrinho', href: '/cart' },
+		{ name: 'Sobre', href: '/about' }
 	];
 
 	$: isCurrent = (href: string) => {
 		if (href === '/') return $page.url.pathname === href;
 		return $page.url.pathname.startsWith(href);
 	};
+
+	let showProfileModal = false;
 </script>
+
+<SignedIn let:currentUser>
+	<Modal show={showProfileModal}>
+		<h2>Olá, {currentUser.name}</h2>
+		<p>
+			Email: {currentUser.email} <br />
+			Telefone: {currentUser.phone} <br />
+			Endereço: {currentUser.address} <br />
+			Função: {rolesMap.get(currentUser.role)} <br />
+		</p>
+		<a href="/register?update" class="btn btn-link">Atualizar</a>
+	</Modal>
+</SignedIn>
 
 <nav class="navbar navbar-expand-lg">
 	<div class="container-fluid">
@@ -49,6 +66,9 @@
 			</ul>
 			<div class="d-inline">
 				<SignedIn let:signOut>
+					<button on:click={() => (showProfileModal = true)} class="btn btn-dark">
+						<i class="fa fa-user" />
+					</button>
 					<button on:click={signOut} class="btn btn-outline-dark" type="submit">Sair</button>
 				</SignedIn>
 				<SignedOut>
@@ -59,3 +79,9 @@
 		</div>
 	</div>
 </nav>
+
+<style>
+	a[aria-current=page] {
+		text-decoration: underline;
+	}
+</style>

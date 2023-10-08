@@ -9,7 +9,9 @@
 	onMount(() => import('bootstrap/dist/js/bootstrap.bundle'));
 </script>
 
-<Navbar />
-<main class="container">
+<header>
+	<Navbar />
+</header>
+<main>
 	<slot />
 </main>

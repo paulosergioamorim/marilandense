@@ -21,7 +21,7 @@ export const actions: Actions = {
 
 		if (!locals.currentUser) return fail(400, { success: false, message: 'Não autorizado' });
 
-		await prisma.shop.create({
+		const shop = await prisma.shop.create({
 			data: {
 				name,
 				description,
@@ -35,6 +35,7 @@ export const actions: Actions = {
 
 		return {
 			success: true,
+			shopId: shop.id,
 			message: 'Loja cadastrada com sucesso!'
 		};
 	}
