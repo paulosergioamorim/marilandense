@@ -19,7 +19,7 @@ export const actions: Actions = {
 		const address = formData.get('address') as string;
 		const tags = formData.getAll('tags') as string[];
 
-		if (!locals.currentUser) return fail(400, { success: false, message: 'Não autorizado' });
+		if (!locals.currentUser) return fail(403, { success: false, message: 'Não autorizado' });
 
 		const shop = await prisma.shop.create({
 			data: {

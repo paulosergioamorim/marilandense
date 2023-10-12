@@ -4,35 +4,48 @@
 	import { page } from '$app/stores';
 	import Product from '$lib/components/Product.svelte';
 	import SignedIn from '$lib/components/SignedIn.svelte';
+	import Modal from '$lib/components/Modal.svelte';
 	import type Prisma from '@prisma/client';
 	import type { PageData } from './$types';
 
-	let buyModal: HTMLDialogElement;
 	let buyingProduct: Prisma.Product | null = null;
 	let buyingAmount = 1;
 
 	function buy(productId: string) {
 		buyingProduct = data.shop.products.find((product) => product.id === productId) ?? null;
-		if (buyingProduct) buyModal.showModal();
+		if (buyingProduct) showBuyModal = true;
 	}
+
+	let showBuyModal = false;
 
 	export let data: PageData;
 </script>
 
-<dialog bind:this={buyModal}>
+<Modal on:close={() => (showBuyModal = false)} showModal={showBuyModal}>
 	<form
 		action="?/buyProduct"
 		method="post"
 		use:enhance={({ formData }) => {
 			formData.append('id', String(buyingProduct?.id));
+			formData.append('amount', String(buyingAmount));
 		}}
 	>
 		<div class="form-group mb-2">
-			<button disabled={buyingAmount === 1} type="button" class="btn btn-link link-danger" on:click={() => buyingAmount--}>
+			<button
+				disabled={buyingAmount === 1}
+				type="button"
+				class="btn btn-link link-danger"
+				on:click={() => buyingAmount--}
+			>
 				<i class="fa fa-minus" />
 			</button>
 			<span class="mx-3">{buyingAmount}</span>
-			<button disabled={buyingAmount >= Number(buyingProduct?.avaliable)} type="button" class="btn btn-link link-success" on:click={() => buyingAmount++}>
+			<button
+				disabled={buyingAmount >= Number(buyingProduct?.avaliable)}
+				type="button"
+				class="btn btn-link link-success"
+				on:click={() => buyingAmount++}
+			>
 				<i class="fa fa-plus" />
 			</button>
 		</div>
@@ -40,7 +53,7 @@
 			<button type="submit" class="btn btn-success">Comprar</button>
 		</div>
 	</form>
-</dialog>
+</Modal>
 
 <section class="container mb-3">
 	<h2 class="mb-3">Informações da loja</h2>

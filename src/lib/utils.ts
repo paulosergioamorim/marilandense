@@ -1,4 +1,4 @@
-import type { SaleStatus, ShopStatus, UserRole } from '@prisma/client';
+import type { Product, SaleStatus, ShopStatus, UserRole } from '@prisma/client';
 
 export const rolesMap = new Map<UserRole, string>([
 	['ADMIN', 'Administrador'],

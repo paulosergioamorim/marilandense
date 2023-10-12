@@ -22,7 +22,7 @@
 </script>
 
 <SignedIn let:currentUser>
-	<Modal show={showProfileModal}>
+	<Modal on:close={() => (showProfileModal = false)} showModal={showProfileModal}>
 		<h2>Olá, {currentUser.name}</h2>
 		<p>
 			Email: {currentUser.email} <br />
@@ -79,9 +79,3 @@
 		</div>
 	</div>
 </nav>
-
-<style>
-	a[aria-current=page] {
-		text-decoration: underline;
-	}
-</style>

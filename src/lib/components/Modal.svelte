@@ -1,17 +1,16 @@
 <script lang="ts">
 	let el: HTMLDialogElement | null = null;
 
-	$: if (show) el?.showModal();
-	else el?.close();
+	$: if (showModal) el?.showModal();
 
-	export let show = false;
+	export let showModal = false;
 </script>
 
-<dialog bind:this={el} class="border-0 p-lg-5 shadow rounded-4 overflow-visible">
+<dialog on:close bind:this={el} class="border-0 p-lg-5 shadow-sm rounded-2 overflow-visible">
 	<button
-		on:click={() => (show = false)}
-		class="btn btn-danger rounded-pill position-absolute"
-		style="top: -.75rem; right: -.75rem;"
+		on:click={() => el?.close()}
+		class="btn btn-sm rounded-pill btn-danger position-absolute"
+		style="top: -.5rem; right: -.5rem;"
 	>
 		<i class="fa fa-x" />
 	</button>

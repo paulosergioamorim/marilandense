@@ -6,13 +6,11 @@
 
 	const fmt = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 
-	export let product: Product & { tag: Tag; sales: { amount: number }[] };
+	export let product: Product & { tag: Tag };
 </script>
 
 <div class="card">
-	<span class="rounded-circle bg-dark"
-		>{product.avaliable - product.sales.reduce((acc, cur) => acc + cur.amount, 0)}</span
-	>
+	<span class="rounded-circle bg-dark">{product.avaliable}</span>
 	<img src={product.imageUrl} alt={product.name} class="card-img-top" />
 	<div class="card-body">
 		<h5 class="card-title">{product.name}</h5>

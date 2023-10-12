@@ -1,5 +1,5 @@
 import { prisma } from '$lib/server/prisma';
-import { error } from '@sveltejs/kit';
+import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { rm } from 'fs/promises';
 
@@ -14,11 +14,6 @@ export const load: PageServerLoad = async ({ params }) => {
 			owner: true,
 			products: {
 				include: {
-					sales: {
-						select: {
-							amount: true
-						}
-					},
 					tag: true
 				}
 			},
@@ -48,7 +43,30 @@ export const actions: Actions = {
 			success: true
 		};
 	},
-	async buyProduct({ request }) {
-		console.log('a');
+	async buyProduct({ locals, request }) {
+		const formData = await request.formData();
+		const productId = formData.get('id') as string;
+		const amount = Number(formData.get('amount'));
+
+		if (!locals.currentUser) return fail(403, { success: false, message: 'Não autorizado' });
+
+		await prisma.sale.create({
+			data: {
+				productId,
+				amount,
+				userId: locals.currentUser?.id
+			}
+		})
+
+		await prisma.product.update({
+			data: {
+				avaliable: {
+					decrement: amount
+				}
+			},
+			where: {
+				id: productId
+			}
+		})
 	}
 };
