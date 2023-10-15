@@ -2,6 +2,7 @@ import { prisma } from '$lib/server/prisma';
 import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { writeFile } from 'fs/promises';
+import sharp from 'sharp';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const { id } = params;
@@ -47,9 +48,14 @@ export const actions: Actions = {
 		});
 
 		try {
-			const fileName = `${product.id}.${photo.name.split('.').at(-1)}`
+			const fileName = `${product.id}.jpg`;
 			const imageUrl = `./static/products/${fileName}`;
-			await writeFile(imageUrl, new Uint8Array(await photo.arrayBuffer()));
+
+			await sharp(await photo.arrayBuffer())
+				.resize({ width: 200, height: 200, fit: 'fill' })
+				.toFormat('jpg')
+				.toFile(imageUrl);
+
 			await prisma.product.update({
 				data: {
 					imageUrl: `/products/${fileName}`

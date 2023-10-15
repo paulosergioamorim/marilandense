@@ -10,9 +10,9 @@
 
 	interface $$Slots {
 		default: {
-			currentUser: User
-			signOut(): Promise<void>
-		}
+			currentUser: User;
+			signOut(): Promise<void>;
+		};
 	}
 </script>
 

@@ -1,4 +1,4 @@
-import type { Product, SaleStatus, ShopStatus, UserRole } from '@prisma/client';
+import type { SaleStatus, ShopStatus, UserRole } from '@prisma/client';
 
 export const rolesMap = new Map<UserRole, string>([
 	['ADMIN', 'Administrador'],
@@ -13,10 +13,11 @@ export const shopStatusMap = new Map<ShopStatus, string>([
 ]);
 
 export const saleStatusMap = new Map<SaleStatus, string>([
+	['CONFIRMED', 'Confirmado'],
 	['APPROVED', 'Aprovada'],
 	['CANCELED', 'Cancelada'],
-	['DELIVERED', 'Enviada para o cliente'],
-	['PENDING', 'Pendente de aprovação'],
+	['DELIVERED', 'Enviado'],
+	['PENDING', 'Pendente'],
 	['SENT', 'Entregue']
 ]);
 

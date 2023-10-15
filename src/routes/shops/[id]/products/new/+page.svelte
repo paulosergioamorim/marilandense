@@ -13,13 +13,13 @@
 	<h1>Adicionar produto</h1>
 	<form
 		method="post"
-        enctype="multipart/form-data"
+		enctype="multipart/form-data"
 		use:enhance={() =>
 			async ({ result }) => {
 				await applyAction(result);
 				if (result.type !== 'success') return;
 				await delay(500);
-				await goto(`/shops/${$page.params.id}`);
+				await goto(`/shops/${$page.params.id}`, { replaceState: true });
 			}}
 	>
 		<div class="form-group mb-2">
@@ -42,7 +42,7 @@
 			<input type="text" name="avaliable" id="avaliable" class="form-control" />
 		</div>
 		<div class="form-group mb-2">
-            <label for="tag">Categoria</label>
+			<label for="tag">Categoria</label>
 			<select name="tag" id="tag" class="form-control">
 				{#each data.shop.tags as tag}
 					<option value={tag.id}>{tag.title}</option>

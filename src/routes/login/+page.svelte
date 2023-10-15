@@ -30,9 +30,9 @@
 			<label for="password">Senha</label>
 			<input type="password" name="password" id="password" class="form-control" />
 		</div>
-		<div class="form-group mb-2">
-			<input type="submit" value="Enviar" class="btn btn-primary" />
-			<a href={redirectTo} class="btn btn-outline-danger">Cancelar</a>
+		<div class="button-group mb-2">
+			<input type="submit" value="Enviar" class="button blue" />
+			<a href={redirectTo} class="button salmon">Cancelar</a>
 		</div>
 	</form>
 	<hr />

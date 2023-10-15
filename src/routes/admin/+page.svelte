@@ -104,7 +104,12 @@
 										>
 											<div class="row">
 												<div class="col-4">
-													<input disabled type="text" value={shopStatusMap.get(shop.status)} class="form-control">
+													<input
+														disabled
+														type="text"
+														value={shopStatusMap.get(shop.status)}
+														class="form-control"
+													/>
 												</div>
 												<div class="col">
 													<div class="row">

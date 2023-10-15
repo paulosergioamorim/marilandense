@@ -8,7 +8,7 @@
 	const items = [
 		{ name: 'Home', href: '/' },
 		{ name: 'Lojas', href: '/shops' },
-		{ name: 'Produtos', href: '/products'},
+		{ name: 'Produtos', href: '/products' },
 		{ name: 'Carrinho', href: '/cart' },
 		{ name: 'Sobre', href: '/about' }
 	];
@@ -66,14 +66,14 @@
 			</ul>
 			<div class="d-inline">
 				<SignedIn let:signOut>
-					<button on:click={() => (showProfileModal = true)} class="btn btn-dark">
+					<button on:click={() => (showProfileModal = true)} class="button green">
 						<i class="fa fa-user" />
 					</button>
-					<button on:click={signOut} class="btn btn-outline-dark" type="submit">Sair</button>
+					<button on:click={signOut} class="button salmon" type="submit">Sair</button>
 				</SignedIn>
 				<SignedOut>
-					<a class="btn btn-dark" href="/login">Entrar</a>
-					<a class="btn btn-outline-dark" href="/register">Registrar</a>
+					<a class="button green" href="/login">Entrar</a>
+					<a class="button salmon" href="/register">Registrar</a>
 				</SignedOut>
 			</div>
 		</div>

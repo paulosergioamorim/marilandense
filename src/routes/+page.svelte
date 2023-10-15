@@ -1,7 +1,11 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import Product from '$lib/components/Product.svelte';
-	import SignedIn from '$lib/components/SignedIn.svelte';
 	import type { PageData } from './$types';
+
+	async function buyProductHandle(e: CustomEvent) {
+		await goto(`/shops/${e.detail.product.shopId}`);
+	}
 
 	export let data: PageData;
 </script>
@@ -15,9 +19,9 @@
 		Em destaque para você!
 	</p>
 
-	<div class="d-flex justify-content-center flex-wrap gap-5">
+	<div class="flex-wrapper">
 		{#each data.products as product}
-			<Product {product} />
+			<Product on:buy={buyProductHandle} {product} />
 		{/each}
 	</div>
 </section>

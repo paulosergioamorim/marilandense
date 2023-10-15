@@ -10,7 +10,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		event.locals.currentUser = null;
 
 		if (event.url.pathname === '/register' && event.url.searchParams.has('update'))
-			event.url.searchParams.delete('update')
+			event.url.searchParams.delete('update');
 
 		return resolve(event);
 	}

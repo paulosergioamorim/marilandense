@@ -1,12 +1,9 @@
 <script lang="ts">
-	import Navbar from '$lib/components/Navbar.svelte';
+	import Navbar from '$lib/components/ui/Navbar.svelte';
 	import { onMount } from 'svelte';
-	import 'bootstrap/dist/css/bootstrap.min.css';
-	import '@fontsource/montserrat';
 	import '../app.css';
 
-	// @ts-ignore
-	onMount(() => import('bootstrap/dist/js/bootstrap.bundle'));
+	onMount(() => import('bootstrap'));
 </script>
 
 <header>

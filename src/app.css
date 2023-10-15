@@ -1,0 +1,64 @@
+@import url('bootstrap');
+@import url('@fontsource/montserrat');
+
+:root {
+	--pink: #ff99c7;
+	--salmon: #de5b61;
+	--blue: #01719d;
+	--green: #6f7e1a;
+	--gray: rgb(200 200 200);
+	--black: rgb(80 80 80);
+}
+
+body {
+	font-family: 'Montserrat', sans-serif;
+}
+
+.flex-wrapper {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: baseline;
+	gap: 1rem;
+}
+
+.button-group {
+	display: flex;
+	gap: 20px;
+	align-content: stretch;
+}
+
+.button {
+	color: white;
+	text-decoration: none;
+	padding: 6px 12px;
+	border-radius: 18px;
+	font-weight: 600;
+	font-size: 1rem;
+	border: none;
+	transition: scale 0.1s ease;
+}
+
+.button.salmon {
+	background-color: var(--salmon);
+}
+
+.button.pink {
+	background-color: var(--pink);
+}
+
+.button.green {
+	background-color: var(--green);
+}
+
+.button.blue {
+	background-color: var(--blue);
+}
+
+.button-group {
+	display: flex;
+	width: 100%;
+	align-content: stretch;
+	gap: 0.5rem;
+}

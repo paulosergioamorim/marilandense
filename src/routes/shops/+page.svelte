@@ -6,7 +6,7 @@
 </script>
 
 <section class="container">
-	<div class="d-flex justify-content-center gap-5">
+	<div class="flex-wrapper">
 		{#each data.shops as shop}
 			<Shop {shop} />
 		{/each}

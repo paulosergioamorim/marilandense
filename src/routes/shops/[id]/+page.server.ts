@@ -3,7 +3,8 @@ import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { rm } from 'fs/promises';
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, depends }) => {
+	depends('products');
 	const { id } = params;
 
 	const shop = await prisma.shop.findFirst({
@@ -31,13 +32,18 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const id = formData.get('id') as string;
 
-		const product = await prisma.product.delete({
-			where: {
-				id
-			}
-		});
+		try {
+			const product = await prisma.product.delete({
+				where: {
+					id
+				}
+			});
 
-		await rm(`./static${product.imageUrl}`);
+			await rm(`./static${product.imageUrl}`);
+		} catch (error) {
+			console.error(error);
+			return fail(500, { success: false, message: 'Erro ao excluir produto.' });
+		}
 
 		return {
 			success: true
@@ -50,13 +56,20 @@ export const actions: Actions = {
 
 		if (!locals.currentUser) return fail(403, { success: false, message: 'Não autorizado' });
 
+		const product = await prisma.product.findFirst({ where: { id: productId } });
+
+		if (!product) return fail(404, { success: false, message: 'Produto não encontrado.' });
+
+		if (product.avaliable < amount)
+			return fail(400, { success: false, message: 'Quantidade acima do estoque do vendedor.' });
+
 		await prisma.sale.create({
 			data: {
 				productId,
 				amount,
 				userId: locals.currentUser?.id
 			}
-		})
+		});
 
 		await prisma.product.update({
 			data: {
@@ -67,6 +80,6 @@ export const actions: Actions = {
 			where: {
 				id: productId
 			}
-		})
+		});
 	}
 };
