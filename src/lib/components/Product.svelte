@@ -2,8 +2,8 @@
 	import type Prisma from '@prisma/client';
 	import SignedIn from './ui/SignedIn.svelte';
 	import Tag from './Tag.svelte';
-	import { createEventDispatcher } from 'svelte';
 	import IsOwner from './ui/IsOwner.svelte';
+	import { createEventDispatcher } from 'svelte';
 	import { enhance } from '$app/forms';
 	import { invalidate } from '$app/navigation';
 
@@ -11,31 +11,26 @@
 
 	const dispatch = createEventDispatcher();
 
-	function buyProduct() {
+	function buyClick() {
 		dispatch('buy', { product });
 	}
 
 	export let product: Prisma.Product & { tag: Prisma.Tag };
 </script>
 
-<div class="product-card">
-	<span class="rounded-circle">{product.avaliable}</span>
+<div class="product">
+	<span class="product-avaliable">{product.avaliable}</span>
 	<img src={product.imageUrl} alt={product.name} class="product-image" />
 	<div class="product-content">
 		<h5 class="product-name">{product.name}</h5>
-		<p class="card-text">
-			{product.description}
-			{fmt.format(product.price)}
-		</p>
+		<p class="product-description">{product.description}</p>
+		<p class="product-price">{fmt.format(product.price)}</p>
 		<div class="tag-group">
 			<Tag tag={product.tag} />
 		</div>
-		<br />
 		<div class="button-group">
 			<SignedIn>
-				<button on:click={buyProduct} class="button green">
-					<i class="fa fa-cart-shopping" />
-				</button>
+				<button on:click={buyClick} class="button green"><i class="fa fa-cart-shopping" /></button>
 			</SignedIn>
 			<IsOwner>
 				<a href="/shops/{product.shopId}/products/new?update={product.id}" class="button blue">
@@ -47,17 +42,11 @@
 					class="d-inline"
 					use:enhance={({ formData, cancel }) => {
 						if (!confirm('Tem certeza que deseja excluir esse produto?')) return cancel();
-
 						formData.append('id', product.id);
-
-						return async () => {
-							await invalidate('products');
-						};
+						return async () => await invalidate('products');
 					}}
 				>
-					<button formaction="?/deleteProduct" type="submit" class="button salmon">
-						<i class="fa fa-trash" />
-					</button>
+					<button formaction="?/deleteProduct" type="submit" class="button salmon"><i class="fa fa-trash" /></button>
 				</form>
 			</IsOwner>
 		</div>
@@ -65,23 +54,24 @@
 </div>
 
 <style>
-	.product-card {
+	.product {
 		display: flex;
+		flex-direction: column;
 		border: 4px var(--gray) solid;
 		border-radius: 24px;
 		overflow: visible;
 		position: relative;
+		width: clamp(25%, 300px, 100% - 1rem);
+	}
+	
+	.product-image {
+		border-radius: 20px 20px 0 0;
 	}
 
-	@media screen and (width <= 728px) {
-		.product-card {
-			flex-direction: column;
-			width: calc(100% - 1rem);
-		}
-
-		.product-image {
-			border-radius: 20px 20px 0 0 !important;
-		}
+	.product-content {
+		display: flex;
+		flex-direction: column;
+		padding: 12px;
 	}
 
 	.product-name {
@@ -89,17 +79,7 @@
 		font-weight: 600;
 	}
 
-	.product-image {
-		border-radius: 20px 0 0 20px;
-	}
-
-	.product-content {
-		font-size: 14px;
-		padding: 12px;
-		max-width: 200px;
-	}
-
-	.product-card span {
+	.product span {
 		background-color: #000;
 		position: absolute;
 		top: -0.75rem;
@@ -110,5 +90,10 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		border-radius: 50%;
+	}
+
+	.button-group {
+		margin-top: auto;
 	}
 </style>

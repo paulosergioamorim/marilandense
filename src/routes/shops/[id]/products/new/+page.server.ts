@@ -1,10 +1,10 @@
 import { prisma } from '$lib/server/prisma';
 import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { writeFile } from 'fs/promises';
 import sharp from 'sharp';
+import type { Product } from '@prisma/client';
 
-export const load: PageServerLoad = async ({ locals, params }) => {
+export const load: PageServerLoad = async ({ locals, params, url }) => {
 	const { id } = params;
 
 	const shop = await prisma.shop.findFirst({
@@ -20,13 +20,21 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 
 	if (locals.currentUser?.id !== shop?.userId) throw error(401, 'Não autorizado');
 
-	return {
-		shop
-	};
+	const updateId = url.searchParams.get('update');
+
+	if (!updateId) return { shop };
+
+	const product = await prisma.product.findFirst({
+		where: {
+			id: updateId
+		}
+	});
+
+	return { shop, product };
 };
 
 export const actions: Actions = {
-	async default({ request, params }) {
+	async default({ request, params, url }) {
 		const formData = await request.formData();
 		const name = formData.get('name') as string;
 		const description = formData.get('description') as string;
@@ -35,24 +43,44 @@ export const actions: Actions = {
 		const tagId = formData.get('tag') as string;
 		const photo = formData.get('photo') as File;
 		const shopId = params.id;
+		const updateId = url.searchParams.get('update');
 
-		const product = await prisma.product.create({
-			data: {
-				name,
-				description,
-				price,
-				avaliable,
-				shopId,
-				tagId
-			}
-		});
+		let product: Product;
+
+		if (updateId)
+			product = await prisma.product.update({
+				data: {
+					name,
+					description,
+					price,
+					avaliable,
+					shopId,
+					tagId
+				},
+				where: {
+					id: updateId
+				}
+			});
+		else
+			product = await prisma.product.create({
+				data: {
+					name,
+					description,
+					price,
+					avaliable,
+					shopId,
+					tagId
+				}
+			});
+
+		if (photo.size === 0) return { success: true, message: 'Sucesso ao cadastrar produto' };
 
 		try {
 			const fileName = `${product.id}.jpg`;
 			const imageUrl = `./static/products/${fileName}`;
 
 			await sharp(await photo.arrayBuffer())
-				.resize({ width: 200, height: 200, fit: 'fill' })
+				.resize({ width: 512, height: 512 })
 				.toFormat('jpg')
 				.toFile(imageUrl);
 
@@ -64,6 +92,8 @@ export const actions: Actions = {
 					id: product.id
 				}
 			});
+
+			return { success: true, message: 'Sucesso ao cadastrar produto.' };
 		} catch (error) {
 			console.error(error);
 			return fail(500, { success: false, message: 'Erro ao salvar imagem.' });

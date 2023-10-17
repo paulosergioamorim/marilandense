@@ -29,6 +29,7 @@
 		padding: 24px;
 		border-radius: 24px;
 		overflow: visible;
+		max-width: 300px;
 	}
 
 	.shop-name {

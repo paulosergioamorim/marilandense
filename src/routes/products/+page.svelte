@@ -7,21 +7,25 @@
 		await goto(`/shops/${e.detail.product.shopId}`);
 	}
 
-	const limit = 10;
-
 	export let data: PageData;
+
+	const limit = 10;
+	const pagesCount = Math.ceil(data.count / limit);
 </script>
 
 <section class="container">
-	<h2 class="text-center fw-bold">Produtos</h2>
+	<h1 class="text-center">Produtos</h1>
+	<br>
 	<nav>
-		<ul class="pagination">
-			{#each Array(Math.ceil(data.count / limit)) as _, i}
-				<li class="page-item">
-					<a href="/products?skip={i * limit}" class="page-link">{i + 1}</a>
-				</li>
-			{/each}
-		</ul>
+		{#if pagesCount > 1}
+			<ul class="pagination">
+				{#each Array(pagesCount) as _, i}
+					<li class="page-item">
+						<a href="/products?skip={i * limit}" class="page-link">{i + 1}</a>
+					</li>
+				{/each}
+			</ul>
+		{/if}
 	</nav>
 	<div class="flex-wrapper">
 		{#each data.products as product}

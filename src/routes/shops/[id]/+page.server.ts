@@ -63,23 +63,24 @@ export const actions: Actions = {
 		if (product.avaliable < amount)
 			return fail(400, { success: false, message: 'Quantidade acima do estoque do vendedor.' });
 
-		await prisma.sale.create({
-			data: {
-				productId,
-				amount,
-				userId: locals.currentUser?.id
-			}
-		});
-
-		await prisma.product.update({
-			data: {
-				avaliable: {
-					decrement: amount
+		await prisma.$transaction([
+			prisma.sale.create({
+				data: {
+					productId,
+					amount,
+					userId: locals.currentUser?.id
 				}
-			},
-			where: {
-				id: productId
-			}
-		});
+			}),
+			prisma.product.update({
+				data: {
+					avaliable: {
+						decrement: amount
+					}
+				},
+				where: {
+					id: productId
+				}
+			})
+		]);
 	}
 };

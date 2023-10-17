@@ -23,6 +23,8 @@
 
 	:global(.tag-group) {
 		display: flex;
-		gap: 6px;
+		flex-wrap: wrap;
+		gap: .5rem;
+		margin: 1rem 0;
 	}
 </style>
