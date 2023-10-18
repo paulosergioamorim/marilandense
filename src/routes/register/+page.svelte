@@ -1,19 +1,18 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
-	import { goto } from '$app/navigation';
+	import { invalidateAll } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { delay, rolesMap } from '$lib/utils';
 	import type { ActionData } from './$types';
 
 	$: currentUser = $page.data.currentUser;
-	$: redirectTo = $page.url.searchParams.get('redirectTo') ?? '/';
 	$: update = $page.url.searchParams.has('update');
 
 	export let form: ActionData;
 </script>
 
 <section class="container">
-	<h1>{update ? 'Atualizar' : 'Registrar'}</h1>
+	<h2>{update ? 'Atualizar' : 'Registrar'}</h2>
 	<form
 		method="post"
 		use:enhance={() =>
@@ -21,7 +20,8 @@
 				await applyAction(result);
 				if (result.type !== 'success') return;
 				await delay(500);
-				await goto(redirectTo, { invalidateAll: true });
+				await invalidateAll();
+				history.back();
 			}}
 	>
 		<div class="form-group mb-2">
@@ -81,12 +81,17 @@
 			<input type="password" name="confirmPassword" id="confirmPassword" class="form-control" />
 		</div>
 		<div class="form-group mb-2">
-			<input type="submit" value="Enviar" class="btn btn-primary" />
-			<a href={redirectTo} class="btn btn-outline-danger">Cancelar</a>
+			<input type="submit" value="Enviar" class="button green" />
+			<input
+				type="button"
+				value="Cancelar"
+				class="button salmon"
+				on:click={() => history.back()}
+			/>
 		</div>
 	</form>
-	<hr />
 	{#if form?.message}
+		<hr />
 		<div class="alert alert-{form.success ? 'success' : 'danger'}">
 			{form.message}
 		</div>

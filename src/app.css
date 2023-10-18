@@ -25,14 +25,15 @@ body {
 
 .button-group {
 	display: flex;
-	gap: 20px;
+	width: auto;
 	align-content: stretch;
+	gap: .5rem;
 }
 
 .button {
 	color: white;
 	text-decoration: none;
-	padding: 6px 12px;
+	padding: 8px 12px;
 	border-radius: 18px;
 	font-weight: 600;
 	font-size: 1rem;
@@ -54,11 +55,4 @@ body {
 
 .button.blue {
 	background-color: var(--blue);
-}
-
-.button-group {
-	display: flex;
-	width: 100%;
-	align-content: stretch;
-	gap: 0.5rem;
 }

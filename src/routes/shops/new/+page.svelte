@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
-	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { delay } from '$lib/utils';
 	import type { ActionData, PageData } from './$types';
@@ -12,7 +11,7 @@
 </script>
 
 <section class="container">
-	<h1>{update ? 'Atualizar' : 'Cadastrar'} loja</h1>
+	<h2>{update ? 'Atualizar' : 'Cadastrar'} loja</h2>
 	<form
 		method="post"
 		use:enhance={() =>
@@ -20,7 +19,7 @@
 				await applyAction(result);
 				if (result.type !== 'success') return;
 				await delay(500);
-				await goto(`/shops/${form?.shopId}`);
+				history.back();
 			}}
 	>
 		<div class="form-group mb-2">
@@ -62,12 +61,12 @@
 			{/each}
 		</div>
 		<div class="form-group mb-2">
-			<input type="submit" value="Enviar" class="btn btn-primary" />
-			<a href="/shops" class="btn btn-outline-danger">Cancelar</a>
+			<input type="submit" value="Enviar" class="button green" />
+			<input type="button" value="Cancelar" class="button salmon" on:click={() => history.back()} />
 		</div>
 	</form>
-	<hr />
 	{#if form?.message}
+		<hr />
 		<div class="alert alert-{form.success ? 'success' : 'danger'}">
 			{form.message}
 		</div>

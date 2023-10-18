@@ -5,18 +5,20 @@
 
 	$: if (showModal) {
 		el?.showModal();
-		el?.classList.toggle('hide');
+		el?.classList.remove('hide');
+	} else {
+		el?.classList.add('hide');
+		delay(500).then(() => el?.close());
 	}
 
 	function hideModal() {
-		el?.classList.toggle('hide');
-		delay(500).then(() => el?.close());
+		showModal = false;
 	}
 
 	export let showModal = false;
 </script>
 
-<dialog on:close bind:this={el} class="marilandense-modal hide">
+<dialog bind:this={el} class="marilandense-modal hide">
 	<button on:click={hideModal} class="button salmon">
 		<i class="fa fa-x" />
 	</button>

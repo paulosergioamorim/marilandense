@@ -62,7 +62,7 @@
 				<button
 					disabled={buyingAmount >= Number(buyingProduct?.avaliable)}
 					type="button"
-					class="button green"
+					class="button blue"
 					on:click={() => buyingAmount++}
 				>
 					<i class="fa fa-plus" />
@@ -70,7 +70,7 @@
 			</div>
 		</div>
 		<div class="form-group my-2">
-			<button type="submit" class="button blue">Comprar</button>
+			<button type="submit" class="button green">Comprar</button>
 		</div>
 	</form>
 </Modal>

@@ -22,7 +22,7 @@
 </script>
 
 <SignedIn let:currentUser>
-	<Modal on:close={() => (showProfileModal = false)} showModal={showProfileModal}>
+	<Modal bind:showModal={showProfileModal} let:hideModal>
 		<h2>Olá, {currentUser.name}</h2>
 		<p>
 			Email: {currentUser.email} <br />
@@ -30,7 +30,7 @@
 			Endereço: {currentUser.address} <br />
 			Função: {rolesMap.get(currentUser.role)} <br />
 		</p>
-		<a href="/register?update" class="btn btn-link">Atualizar</a>
+		<a href="/register?update" on:click={hideModal} class="btn btn-link">Atualizar</a>
 	</Modal>
 </SignedIn>
 
