@@ -11,7 +11,7 @@ export function setAuthCookies(cookies: Cookies, userId: string) {
 		path: '/',
 		httpOnly: true,
 		sameSite: 'strict',
-		secure: dev ? false : true,
+		secure: !dev,
 		maxAge: 60 * 60 * 24
 	});
 
@@ -19,7 +19,7 @@ export function setAuthCookies(cookies: Cookies, userId: string) {
 		path: '/',
 		httpOnly: true,
 		sameSite: 'strict',
-		secure: dev ? false : true,
+		secure: !dev,
 		maxAge: 60 * 60 * 24
 	});
 }

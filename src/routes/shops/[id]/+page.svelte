@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { invalidate } from '$app/navigation';
-	import { page } from '$app/stores';
 	import Product from '$lib/components/Product.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import IsOwner from '$lib/components/ui/IsOwner.svelte';
 	import type Prisma from '@prisma/client';
 	import type { PageData } from './$types';
 	import { setContext } from 'svelte';
+	import IsNotOwner from '$lib/components/ui/IsNotOwner.svelte';
 
 	let buyingProduct: Prisma.Product | null = null;
 	let buyingAmount = 1;
@@ -75,22 +75,32 @@
 	</form>
 </Modal>
 
-<IsOwner>
-	<section class="container mb-3">
-		<h2 class="mb-3">Administração da loja</h2>
-		<div class="button-group">
-			<a href="/shops/{data.shop.id}/products/new" class="button pink">Adicionar produto</a>
-			<a href="/shops/new?update={data.shop.id}" class="button pink">Atualizar loja</a>
-		</div>
-	</section>
-</IsOwner>
-
 <section class="container mb-3">
-	<h2 class="mb-3">Produtos de {data.shop.name}</h2>
-
+	<h2 class="text-center">
+		<IsOwner>Meus produtos</IsOwner>
+		<IsNotOwner>
+			Produtos de {data.shop.name}
+		</IsNotOwner>
+	</h2>
+	<br />
 	<div class="flex-wrapper">
 		{#each data.shop.products as product}
 			<Product {product} on:buy={buyProductHandle} />
 		{/each}
 	</div>
 </section>
+
+<IsOwner>
+	<div class="button-group">
+		<a href="/shops/{data.shop.id}/products/new" class="button pink">Adicionar produto</a>
+		<a href="/shops/new?update={data.shop.id}" class="button pink">Atualizar loja</a>
+	</div>
+</IsOwner>
+
+<style>
+	.button-group {
+		position: fixed;
+		bottom: 1rem;
+		right: 1rem;
+	}
+</style>

@@ -20,7 +20,7 @@ model User {
   refreshToken String
   role         UserRole
   shops        Shop[]
-  sales        Sale[]
+  orders       Order[]
   reviews      Review[]
 }
 
@@ -51,21 +51,22 @@ model Product {
   avaliable   Int
   shopId      String
   imageUrl    String?
+  updatedAt   DateTime @updatedAt
   tagId       String
   tag         Tag      @relation(fields: [tagId], references: [id])
   shop        Shop     @relation(fields: [shopId], references: [id])
-  sales       Sale[]
+  orders      Order[]
   reviews     Review[]
 }
 
-model Sale {
-  id        String     @id @default(uuid())
+model Order {
+  id        String      @id @default(uuid())
   productId String
   userId    String
   amount    Int
-  product   Product    @relation(fields: [productId], references: [id])
-  buyer     User       @relation(fields: [userId], references: [id])
-  status    SaleStatus @default(PENDING)
+  product   Product     @relation(fields: [productId], references: [id])
+  buyer     User        @relation(fields: [userId], references: [id])
+  status    OrderStatus @default(PENDING)
 }
 
 model Review {
@@ -91,7 +92,7 @@ enum ShopStatus {
   NOT_APPROVED
 }
 
-enum SaleStatus {
+enum OrderStatus {
   PENDING
   CONFIRMED
   APPROVED

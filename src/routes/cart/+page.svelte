@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Sale from '$lib/components/Sale.svelte';
+	import Order from '$lib/components/Order.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -7,8 +7,8 @@
 
 <section class="container">
 	<div class="d-flex justify-content-center gap-5">
-		{#each data.sales as sale}
-			<Sale {sale} />
+		{#each data.orders as order}
+			<Order {order} />
 		{/each}
 	</div>
 </section>

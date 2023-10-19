@@ -21,7 +21,7 @@
 <div class="product">
 	<span class="product-avaliable">{product.avaliable}</span>
 	<img src={product.imageUrl} alt={product.name} class="product-image" />
-	<div class="product-content">
+	<div class="product-body">
 		<h5 class="product-name">{product.name}</h5>
 		<p class="product-description">{product.description}</p>
 		<p class="product-price">{fmt.format(product.price)}</p>
@@ -46,7 +46,9 @@
 						return async () => await invalidate('products');
 					}}
 				>
-					<button formaction="?/deleteProduct" type="submit" class="button salmon"><i class="fa fa-trash" /></button>
+					<button formaction="?/deleteProduct" type="submit" class="button salmon"
+						><i class="fa fa-trash" /></button
+					>
 				</form>
 			</IsOwner>
 		</div>
@@ -63,12 +65,12 @@
 		position: relative;
 		width: clamp(25%, 300px, 100% - 1rem);
 	}
-	
+
 	.product-image {
 		border-radius: 20px 20px 0 0;
 	}
 
-	.product-content {
+	.product-body {
 		display: flex;
 		flex-direction: column;
 		padding: 12px;
@@ -79,7 +81,7 @@
 		font-weight: 600;
 	}
 
-	.product span {
+	.product-avaliable {
 		background-color: #000;
 		position: absolute;
 		top: -0.75rem;

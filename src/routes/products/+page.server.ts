@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ depends, url }) => {
 	const products = await prisma.product.findMany({
 		include: {
 			tag: true,
-			sales: {
+			orders: {
 				select: {
 					amount: true
 				}

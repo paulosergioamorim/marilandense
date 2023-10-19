@@ -14,7 +14,7 @@
 </script>
 
 <section class="container">
-	<h1 class="text-center">Produtos</h1>
+	<h2 class="text-center">Produtos</h2>
 	<br>
 	<nav>
 		{#if pagesCount > 1}

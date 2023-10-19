@@ -1,4 +1,4 @@
-import type { SaleStatus, ShopStatus, UserRole } from '@prisma/client';
+import type { OrderStatus, ShopStatus, UserRole } from '@prisma/client';
 
 export const rolesMap = new Map<UserRole, string>([
 	['ADMIN', 'Administrador'],
@@ -12,7 +12,7 @@ export const shopStatusMap = new Map<ShopStatus, string>([
 	['PENDING', 'Pendente de aprovação']
 ]);
 
-export const saleStatusMap = new Map<SaleStatus, string>([
+export const saleStatusMap = new Map<OrderStatus, string>([
 	['CONFIRMED', 'Confirmado'],
 	['APPROVED', 'Aprovada'],
 	['CANCELED', 'Cancelada'],
@@ -23,4 +23,8 @@ export const saleStatusMap = new Map<SaleStatus, string>([
 
 export function delay(ms: number) {
 	return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export function useTooltip(node: HTMLElement, { tooltip = ''}) {
+
 }
