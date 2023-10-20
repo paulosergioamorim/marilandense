@@ -6,6 +6,10 @@
 	export let data: PageData;
 </script>
 
+<svelte:head>
+	<title>Marilandense | Administrador</title>
+</svelte:head>
+
 <section class="container">
 	<h2 class="mb-3">Painél de Administrador</h2>
 	<div class="accordion" id="accordionExample">

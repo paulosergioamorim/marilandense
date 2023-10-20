@@ -11,8 +11,12 @@
 	export let form: ActionData;
 </script>
 
+<svelte:head>
+	<title>Marilandense | {update ? 'Atualizar' : 'Cadastrar'}</title>
+</svelte:head>
+
 <section class="container">
-	<h2>{update ? 'Atualizar' : 'Registrar'}</h2>
+	<h2>{update ? 'Atualizar' : 'Cadastrar'}</h2>
 	<form
 		method="post"
 		use:enhance={() =>
@@ -82,12 +86,7 @@
 		</div>
 		<div class="form-group mb-2">
 			<input type="submit" value="Enviar" class="button green" />
-			<input
-				type="button"
-				value="Cancelar"
-				class="button salmon"
-				on:click={() => history.back()}
-			/>
+			<input type="button" value="Cancelar" class="button salmon" on:click={() => history.back()} />
 		</div>
 	</form>
 	{#if form?.message}

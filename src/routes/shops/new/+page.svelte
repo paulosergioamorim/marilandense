@@ -10,6 +10,10 @@
 	export let form: ActionData;
 </script>
 
+<svelte:head>
+	<title>Marilandense | Cadastrar loja</title>
+</svelte:head>
+
 <section class="container">
 	<h2>{update ? 'Atualizar' : 'Cadastrar'} loja</h2>
 	<form

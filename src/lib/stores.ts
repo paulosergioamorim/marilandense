@@ -1,6 +1,8 @@
 import { writable } from 'svelte/store';
 
-function showModalStore() {
+export type ShowModalStoreType = ReturnType<typeof showModalStore>;
+
+export function showModalStore() {
 	const { set, subscribe, update } = writable(false);
 
 	function showModal() {
@@ -22,7 +24,3 @@ function showModalStore() {
 		toggleModal
 	};
 }
-
-export const profileShowModal = showModalStore();
-
-export const buyProductShowModal = showModalStore();

@@ -42,11 +42,21 @@
 						>
 							<i class="fa fa-plus" />
 						</button>
-						<button formaction="?/confirmOrder" type="submit" class="button green" use:tooltip={'Confirmar'}>
+						<button
+							formaction="?/confirmOrder"
+							type="submit"
+							class="button green"
+							use:tooltip={'Confirmar'}
+						>
 							<i class="fa fa-shopping-bag" />
 						</button>
 					{/if}
-					<button formaction="?/deleteOrder" type="submit" class="button salmon" use:tooltip={'Excluir'}>
+					<button
+						formaction="?/deleteOrder"
+						type="submit"
+						class="button salmon"
+						use:tooltip={'Excluir'}
+					>
 						<i class="fa fa-trash" />
 					</button>
 				</form>

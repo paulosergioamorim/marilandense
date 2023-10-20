@@ -11,6 +11,10 @@
 	export let form: ActionData;
 </script>
 
+<svelte:head>
+	<title>Marilandense | Adicionar produto</title>
+</svelte:head>
+
 <section class="container">
 	<h2>{update ? 'Atualizar' : 'Cadastrar'} produto</h2>
 	<form

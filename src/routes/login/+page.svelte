@@ -1,15 +1,18 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
-	import { page } from '$app/stores';
 	import { delay } from '$lib/utils';
 	import type { ActionData } from './$types';
 
 	export let form: ActionData;
 </script>
 
+<svelte:head>
+	<title>Marilandense | Entrar</title>
+</svelte:head>
+
 <section class="container">
-	<h1>Entrar</h1>
+	<h2>Entrar</h2>
 	<form
 		method="post"
 		use:enhance={() =>
@@ -31,12 +34,7 @@
 		</div>
 		<div class="button-group mb-2">
 			<input type="submit" value="Enviar" class="button green" />
-			<input
-				type="button"
-				value="Cancelar"
-				class="button salmon"
-				on:click={() => history.back()}
-			/>
+			<input type="button" value="Cancelar" class="button salmon" on:click={() => history.back()} />
 		</div>
 	</form>
 	{#if form?.message}

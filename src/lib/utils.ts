@@ -1,4 +1,3 @@
-import { goto } from '$app/navigation';
 import type { OrderStatus, ShopStatus, UserRole } from '@prisma/client';
 import tippy from 'tippy.js';
 
@@ -33,20 +32,6 @@ export function tooltip(node: HTMLElement, content = '') {
 	return {
 		destroy() {
 			t.destroy();
-		}
-	};
-}
-
-export function link(node: HTMLElement, href = '') {
-	node.addEventListener('click', listener);
-
-	function listener() {
-		goto(href);
-	}
-
-	return {
-		destroy() {
-			node.removeEventListener('click', listener);
 		}
 	};
 }

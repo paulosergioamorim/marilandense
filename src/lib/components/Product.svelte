@@ -38,13 +38,13 @@
 				{/if}
 			</SignedIn>
 			<IsOwner>
-				<button
-					use:link={`/shops/${product.shopId}/products/new?update=${product.id}`}
+				<a
+					href="/shops/{product.shopId}/products/new?update=${product.id}"
 					use:tooltip={'Editar produto'}
 					class="button blue"
 				>
 					<i class="fa fa-edit" />
-				</button>
+				</a>
 				<form
 					action="?/deleteProduct"
 					method="post"

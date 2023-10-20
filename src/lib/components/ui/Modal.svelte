@@ -1,9 +1,10 @@
 <script lang="ts">
+	import type { ShowModalStoreType } from '$lib/stores';
 	import { delay } from '$lib/utils';
 
 	let el: HTMLDialogElement | null = null;
 
-	$: if (showModal) {
+	$: if ($modalStore) {
 		el?.showModal();
 		el?.classList.remove('hide');
 	} else {
@@ -11,30 +12,14 @@
 		delay(500).then(() => el?.close());
 	}
 
-	function hideModal() {
-		showModal = false;
-	}
-
-	function fade(node: HTMLElement) {
-		node.animate([
-			{}
-		])
-
-		return {
-			destroy() {
-				console.log('a');
-			}
-		}
-	}
-
-	export let showModal = false;
+	export let modalStore: ShowModalStoreType;
 </script>
 
 <dialog bind:this={el} class="marilandense-modal hide">
-	<button on:click={hideModal} class="button salmon">
+	<button on:click={modalStore.hideModal} class="button salmon">
 		<i class="fa fa-x" />
 	</button>
-	<slot {hideModal} />
+	<slot hideModal={modalStore.hideModal} />
 </dialog>
 
 <style>

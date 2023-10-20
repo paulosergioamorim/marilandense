@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Product from '$lib/components/Product.svelte';
 	import BuyModal from '$lib/components/ui/BuyModal.svelte';
+	import { showModalStore } from '$lib/stores';
 	import type { PageData } from './$types';
 	import type Prisma from '@prisma/client';
 
@@ -8,10 +9,10 @@
 
 	function buyProductHandle(e: CustomEvent) {
 		product = e.detail.product;
-		if (product) showModal = true;
+		if (product) modalStore.showModal();
 	}
 
-	let showModal = false;
+	const modalStore = showModalStore();
 
 	export let data: PageData;
 
@@ -19,7 +20,11 @@
 	const pagesCount = Math.ceil(data.count / limit);
 </script>
 
-<BuyModal bind:showModal {product} />
+<svelte:head>
+	<title>Marilandense | Produtos</title>
+</svelte:head>
+
+<BuyModal {modalStore} {product} />
 
 <section class="container">
 	<h2 class="text-center">Produtos</h2>

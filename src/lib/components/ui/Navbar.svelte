@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { showModalStore } from '$lib/stores';
 	import { rolesMap, tooltip } from '$lib/utils';
 	import Modal from './Modal.svelte';
 	import SignedIn from './SignedIn.svelte';
@@ -18,11 +19,11 @@
 		return $page.url.pathname.startsWith(href);
 	};
 
-	let showProfileModal = false;
+	const modalStore = showModalStore();
 </script>
 
 <SignedIn let:currentUser>
-	<Modal bind:showModal={showProfileModal} let:hideModal>
+	<Modal {modalStore} let:hideModal>
 		<h2>Olá, {currentUser.name}</h2>
 		<p>
 			Email: {currentUser.email} <br />
@@ -30,7 +31,7 @@
 			Endereço: {currentUser.address} <br />
 			Função: {rolesMap.get(currentUser.role)} <br />
 		</p>
-		<a href="/register?update" on:click={hideModal} class="btn btn-link">Atualizar</a>
+		<a href="/register?update" on:click={hideModal} class="button blue">Atualizar</a>
 	</Modal>
 </SignedIn>
 
@@ -66,11 +67,7 @@
 			</ul>
 			<div class="button-group">
 				<SignedIn let:signOut>
-					<button
-						use:tooltip={'Usuário'}
-						on:click={() => (showProfileModal = true)}
-						class="button green"
-					>
+					<button use:tooltip={'Usuário'} on:click={modalStore.showModal} class="button green">
 						<i class="fa fa-user" />
 					</button>
 					<button on:click={signOut} class="button salmon" type="submit">Sair</button>

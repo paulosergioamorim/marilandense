@@ -26,7 +26,14 @@ export const actions: Actions = {
 		if (password !== '' && password !== confirmPassword)
 			return fail(404, { success: false, message: 'Senhas não coincidem.' });
 
-		if (!email || !name || !phone || !address || (!update && (!password || !confirmPassword)) || !role)
+		if (
+			!email ||
+			!name ||
+			!phone ||
+			!address ||
+			(!update && (!password || !confirmPassword)) ||
+			!role
+		)
 			return fail(400, { success: false, message: 'Informações faltam.' });
 
 		if (update && locals.currentUser) {

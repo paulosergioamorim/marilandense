@@ -1,31 +1,33 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
-	import { invalidate } from '$app/navigation';
 	import Product from '$lib/components/Product.svelte';
-	import Modal from '$lib/components/ui/Modal.svelte';
 	import IsOwner from '$lib/components/ui/IsOwner.svelte';
 	import type Prisma from '@prisma/client';
 	import type { PageData } from './$types';
 	import { setContext } from 'svelte';
 	import IsNotOwner from '$lib/components/ui/IsNotOwner.svelte';
-	import { link, tooltip } from '$lib/utils';
+	import { tooltip } from '$lib/utils';
 	import BuyModal from '$lib/components/ui/BuyModal.svelte';
+	import { showModalStore } from '$lib/stores';
 
 	let product: Prisma.Product | null = null;
 
 	function buyProductHandle(e: CustomEvent) {
 		product = e.detail.product;
-		if (product) showModal = true;
+		if (product) modalStore.showModal();
 	}
 
-	let showModal = false;
+	const modalStore = showModalStore();
 
 	export let data: PageData;
 
 	setContext('shop', data.shop);
 </script>
 
-<BuyModal bind:showModal {product} />
+<svelte:head>
+	<title>Marilandense | Fazenda {data.shop.name}</title>
+</svelte:head>
+
+<BuyModal {modalStore} {product} />
 
 <section class="container mb-3">
 	<h2 class="text-center">
@@ -44,20 +46,16 @@
 
 <IsOwner>
 	<div class="button-group">
-		<button
+		<a
 			use:tooltip={'Adicionar produto'}
-			use:link={`/shops/${data.shop.id}/products/new`}
+			href="/shops/{data.shop.id}/products/new"
 			class="button blue"
 		>
 			<i class="fa fa-add" />
-		</button>
-		<button
-			use:tooltip={'Editar loja'}
-			use:link={`/shops/new?update=${data.shop.id}`}
-			class="button green"
-		>
+		</a>
+		<a use:tooltip={'Editar loja'} href="/shops/new?update=${data.shop.id}" class="button green">
 			<i class="fa fa-edit" />
-		</button>
+		</a>
 	</div>
 </IsOwner>
 

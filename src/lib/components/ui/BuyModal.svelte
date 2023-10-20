@@ -1,16 +1,17 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { goto, invalidate } from '$app/navigation';
+	import type { ShowModalStoreType } from '$lib/stores';
 	import Modal from './Modal.svelte';
 	import type Prisma from '@prisma/client';
 
 	let amount = 1;
 
 	export let product: Prisma.Product | null;
-	export let showModal = false;
+	export let modalStore: ShowModalStoreType;
 </script>
 
-<Modal let:hideModal bind:showModal>
+<Modal {modalStore} let:hideModal>
 	<form
 		action="?/buyProduct"
 		method="post"
