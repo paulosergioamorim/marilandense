@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { saleStatusMap } from '$lib/utils';
+	import { saleStatusMap, tooltip } from '$lib/utils';
 	import type Prisma from '@prisma/client';
 	import Tag from './Tag.svelte';
 	import IsNotOwner from './ui/IsNotOwner.svelte';
@@ -20,7 +20,7 @@
 		</p>
 		<div class="tag-group">
 			<Tag tag={order.product.tag} />
-			<span class="badge bg-success rounded-pill">{saleStatusMap.get(order.status)}</span>
+			<span class="tag">{saleStatusMap.get(order.status)}</span>
 		</div>
 		<IsNotOwner>
 			<div class="button-group">
@@ -42,11 +42,11 @@
 						>
 							<i class="fa fa-plus" />
 						</button>
-						<button formaction="?/confirmOrder" type="submit" class="button green">
+						<button formaction="?/confirmOrder" type="submit" class="button green" use:tooltip={'Confirmar'}>
 							<i class="fa fa-shopping-bag" />
 						</button>
 					{/if}
-					<button formaction="?/deleteOrder" type="submit" class="button salmon">
+					<button formaction="?/deleteOrder" type="submit" class="button salmon" use:tooltip={'Excluir'}>
 						<i class="fa fa-trash" />
 					</button>
 				</form>

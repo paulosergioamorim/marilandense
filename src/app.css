@@ -1,5 +1,7 @@
-@import url('bootstrap');
-@import url('@fontsource/montserrat');
+@import 'bootstrap';
+@import 'tippy.js/dist/tippy.css';
+@import 'tippy.js/animations/scale.css';
+@import '@fontsource/montserrat';
 
 :root {
 	--pink: #ff99c7;
@@ -27,7 +29,7 @@ body {
 	display: flex;
 	width: auto;
 	align-content: stretch;
-	gap: .5rem;
+	gap: 0.5rem;
 }
 
 .button {

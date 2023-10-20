@@ -7,7 +7,7 @@
 <span class="tag">#{tag.title}</span>
 
 <style>
-	.tag {
+	:global(.tag) {
 		display: flex;
 		width: fit-content;
 		padding: 0 8px;
@@ -24,7 +24,7 @@
 	:global(.tag-group) {
 		display: flex;
 		flex-wrap: wrap;
-		gap: .5rem;
+		gap: 1rem;
 		margin: 1rem 0;
 	}
 </style>

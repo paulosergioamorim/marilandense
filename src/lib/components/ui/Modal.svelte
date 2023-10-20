@@ -15,6 +15,18 @@
 		showModal = false;
 	}
 
+	function fade(node: HTMLElement) {
+		node.animate([
+			{}
+		])
+
+		return {
+			destroy() {
+				console.log('a');
+			}
+		}
+	}
+
 	export let showModal = false;
 </script>
 

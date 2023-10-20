@@ -6,6 +6,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { enhance } from '$app/forms';
 	import { invalidate } from '$app/navigation';
+	import { link, tooltip } from '$lib/utils';
 
 	const fmt = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 
@@ -30,12 +31,20 @@
 		</div>
 		<div class="button-group">
 			<SignedIn>
-				<button on:click={buyClick} class="button green"><i class="fa fa-cart-shopping" /></button>
+				{#if product.avaliable > 0}
+					<button use:tooltip={'Adicionar ao carrinho'} on:click={buyClick} class="button green"
+						><i class="fa fa-cart-shopping" /></button
+					>
+				{/if}
 			</SignedIn>
 			<IsOwner>
-				<a href="/shops/{product.shopId}/products/new?update={product.id}" class="button blue">
+				<button
+					use:link={`/shops/${product.shopId}/products/new?update=${product.id}`}
+					use:tooltip={'Editar produto'}
+					class="button blue"
+				>
 					<i class="fa fa-edit" />
-				</a>
+				</button>
 				<form
 					action="?/deleteProduct"
 					method="post"
@@ -46,8 +55,11 @@
 						return async () => await invalidate('products');
 					}}
 				>
-					<button formaction="?/deleteProduct" type="submit" class="button salmon"
-						><i class="fa fa-trash" /></button
+					<button
+						use:tooltip={'Excluir produto'}
+						formaction="?/deleteProduct"
+						type="submit"
+						class="button salmon"><i class="fa fa-trash" /></button
 					>
 				</form>
 			</IsOwner>

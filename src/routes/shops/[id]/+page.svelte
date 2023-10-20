@@ -8,72 +8,24 @@
 	import type { PageData } from './$types';
 	import { setContext } from 'svelte';
 	import IsNotOwner from '$lib/components/ui/IsNotOwner.svelte';
+	import { link, tooltip } from '$lib/utils';
+	import BuyModal from '$lib/components/ui/BuyModal.svelte';
 
-	let buyingProduct: Prisma.Product | null = null;
-	let buyingAmount = 1;
+	let product: Prisma.Product | null = null;
 
 	function buyProductHandle(e: CustomEvent) {
-		buyingProduct = e.detail.product;
-		buyingAmount = 1;
-		if (buyingProduct) showBuyModal = true;
+		product = e.detail.product;
+		if (product) showModal = true;
 	}
 
-	let showBuyModal = false;
+	let showModal = false;
 
 	export let data: PageData;
 
 	setContext('shop', data.shop);
 </script>
 
-<Modal let:hideModal on:close={() => (showBuyModal = false)} showModal={showBuyModal}>
-	<form
-		action="?/buyProduct"
-		method="post"
-		use:enhance={({ formData }) => {
-			formData.append('id', String(buyingProduct?.id));
-			return async () => {
-				hideModal();
-				await invalidate('products');
-			};
-		}}
-	>
-		<h2>Comprar {buyingProduct?.name}</h2>
-		<div class="form-group mb-2">
-			<label for="amount">Quantidade</label>
-			<div class="button-group mt-2">
-				<button
-					disabled={buyingAmount === 1}
-					type="button"
-					class="button salmon"
-					value="&minus;"
-					on:click={() => buyingAmount--}
-				>
-					<i class="fa fa-minus" />
-				</button>
-				<input
-					type="text"
-					name="amount"
-					id="amount"
-					readonly
-					class="form-control-plaintext text-center"
-					style="width: 2rem"
-					value={buyingAmount}
-				/>
-				<button
-					disabled={buyingAmount >= Number(buyingProduct?.avaliable)}
-					type="button"
-					class="button blue"
-					on:click={() => buyingAmount++}
-				>
-					<i class="fa fa-plus" />
-				</button>
-			</div>
-		</div>
-		<div class="form-group my-2">
-			<button type="submit" class="button green">Comprar</button>
-		</div>
-	</form>
-</Modal>
+<BuyModal bind:showModal {product} />
 
 <section class="container mb-3">
 	<h2 class="text-center">
@@ -92,8 +44,20 @@
 
 <IsOwner>
 	<div class="button-group">
-		<a href="/shops/{data.shop.id}/products/new" class="button pink">Adicionar produto</a>
-		<a href="/shops/new?update={data.shop.id}" class="button pink">Atualizar loja</a>
+		<button
+			use:tooltip={'Adicionar produto'}
+			use:link={`/shops/${data.shop.id}/products/new`}
+			class="button blue"
+		>
+			<i class="fa fa-add" />
+		</button>
+		<button
+			use:tooltip={'Editar loja'}
+			use:link={`/shops/new?update=${data.shop.id}`}
+			class="button green"
+		>
+			<i class="fa fa-edit" />
+		</button>
 	</div>
 </IsOwner>
 

@@ -2,6 +2,7 @@ import { prisma } from '$lib/server/prisma';
 import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { rm } from 'fs/promises';
+import { buyProduct } from '$lib/server/actions';
 
 export const load: PageServerLoad = async ({ params, depends }) => {
 	depends('products');
@@ -28,6 +29,7 @@ export const load: PageServerLoad = async ({ params, depends }) => {
 };
 
 export const actions: Actions = {
+	buyProduct,
 	async deleteProduct({ request }) {
 		const formData = await request.formData();
 		const id = formData.get('id') as string;
@@ -48,29 +50,5 @@ export const actions: Actions = {
 		return {
 			success: true
 		};
-	},
-	async buyProduct({ locals, request }) {
-		const formData = await request.formData();
-		const productId = formData.get('id') as string;
-		const amount = Number(formData.get('amount'));
-
-		if (!locals.currentUser) return fail(403, { success: false, message: 'Não autorizado' });
-
-		const product = await prisma.product.findFirst({ where: { id: productId } });
-
-		if (!product) return fail(404, { success: false, message: 'Produto não encontrado.' });
-
-		if (product.avaliable < amount)
-			return fail(400, { success: false, message: 'Quantidade acima do estoque do vendedor.' });
-
-		await prisma.order.create({
-			data: {
-				productId,
-				amount,
-				userId: locals.currentUser?.id
-			}
-		});
-
-		return { success: true, message: 'Compra realizada com sucesso!' };
 	}
 };

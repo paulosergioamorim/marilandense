@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { rolesMap } from '$lib/utils';
+	import { rolesMap, tooltip } from '$lib/utils';
 	import Modal from './Modal.svelte';
 	import SignedIn from './SignedIn.svelte';
 	import SignedOut from './SignedOut.svelte';
@@ -64,9 +64,13 @@
 					</li>
 				{/each}
 			</ul>
-			<div class="d-inline">
+			<div class="button-group">
 				<SignedIn let:signOut>
-					<button on:click={() => (showProfileModal = true)} class="button green">
+					<button
+						use:tooltip={'Usuário'}
+						on:click={() => (showProfileModal = true)}
+						class="button green"
+					>
 						<i class="fa fa-user" />
 					</button>
 					<button on:click={signOut} class="button salmon" type="submit">Sair</button>

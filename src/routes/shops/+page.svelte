@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Shop from '$lib/components/Shop.svelte';
 	import SignedIn from '$lib/components/ui/SignedIn.svelte';
+	import { link, tooltip } from '$lib/utils';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -16,13 +17,15 @@
 	</div>
 	<SignedIn let:currentUser>
 		{#if currentUser.role === 'SELLER'}
-			<a href="/shops/new" class="button pink">Criar loja</a>
+			<button use:link={'/shops/new'} use:tooltip={'Adicionar loja'} class="button blue">
+				<i class="fa fa-add"></i>
+			</button>
 		{/if}
 	</SignedIn>
 </section>
 
 <style>
-	a[href='/shops/new'] {
+	.button.blue {
 		position: fixed;
 		bottom: 1rem;
 		right: 1rem;

@@ -90,6 +90,8 @@ export const actions: Actions = {
 			}
 		});
 
+		if (order.status === 'PENDING') return;
+
 		await prisma.product.update({
 			data: {
 				avaliable: {
@@ -100,5 +102,54 @@ export const actions: Actions = {
 				id: order.productId
 			}
 		});
+	},
+	async confirmOrder({ request }) {
+		const formData = await request.formData();
+		const id = formData.get('id') as string;
+
+		const [product, order] = await prisma.$transaction([
+			prisma.product.findFirst({
+				where: {
+					orders: {
+						some: {
+							id
+						}
+					}
+				}
+			}),
+			prisma.order.findFirst({
+				where: {
+					id
+				}
+			})
+		]);
+
+		if (!product || !order) return fail(404, { success: false, message: 'Produto não encontrado' });
+
+		if (product.avaliable < order.amount)
+			return fail(400, { success: false, message: 'Falta no estoque!' });
+
+		await prisma.$transaction([
+			prisma.order.update({
+				data: {
+					status: 'CONFIRMED'
+				},
+				where: {
+					id
+				}
+			}),
+			prisma.product.update({
+				data: {
+					avaliable: {
+						decrement: order.amount
+					}
+				},
+				where: {
+					id: product.id
+				}
+			})
+		]);
+
+		return { success: true, message: 'Compra confirmada com sucesso!' };
 	}
 };

@@ -1,4 +1,6 @@
+import { goto } from '$app/navigation';
 import type { OrderStatus, ShopStatus, UserRole } from '@prisma/client';
+import tippy from 'tippy.js';
 
 export const rolesMap = new Map<UserRole, string>([
 	['ADMIN', 'Administrador'],
@@ -25,6 +27,26 @@ export function delay(ms: number) {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export function useTooltip(node: HTMLElement, { tooltip = ''}) {
+export function tooltip(node: HTMLElement, content = '') {
+	const t = tippy(node, { content, animation: 'scale' });
 
+	return {
+		destroy() {
+			t.destroy();
+		}
+	};
+}
+
+export function link(node: HTMLElement, href = '') {
+	node.addEventListener('click', listener);
+
+	function listener() {
+		goto(href);
+	}
+
+	return {
+		destroy() {
+			node.removeEventListener('click', listener);
+		}
+	};
 }

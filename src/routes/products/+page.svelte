@@ -1,11 +1,17 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import Product from '$lib/components/Product.svelte';
+	import BuyModal from '$lib/components/ui/BuyModal.svelte';
 	import type { PageData } from './$types';
+	import type Prisma from '@prisma/client';
 
-	async function buyProductHandle(e: CustomEvent) {
-		await goto(`/shops/${e.detail.product.shopId}`);
+	let product: Prisma.Product | null = null;
+
+	function buyProductHandle(e: CustomEvent) {
+		product = e.detail.product;
+		if (product) showModal = true;
 	}
+
+	let showModal = false;
 
 	export let data: PageData;
 
@@ -13,9 +19,11 @@
 	const pagesCount = Math.ceil(data.count / limit);
 </script>
 
+<BuyModal bind:showModal {product} />
+
 <section class="container">
 	<h2 class="text-center">Produtos</h2>
-	<br>
+	<br />
 	<nav>
 		{#if pagesCount > 1}
 			<ul class="pagination">
