@@ -26,5 +26,5 @@ export function setAuthCookies(cookies: Cookies, userId: string) {
 
 export function deleteAuthCookies(cookies: Cookies) {
 	cookies.delete('marilandense_auth_token');
-	cookies.delete('marilandense_refresh_auth_token');
+	cookies.delete('marilandense_auth_refresh_token');
 }

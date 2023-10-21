@@ -1,7 +1,7 @@
 <script lang="ts">
+	import { tooltip } from '$lib';
 	import Shop from '$lib/components/Shop.svelte';
 	import SignedIn from '$lib/components/ui/SignedIn.svelte';
-	import { tooltip } from '$lib/utils';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -21,9 +21,9 @@
 	</div>
 	<SignedIn let:currentUser>
 		{#if currentUser.role === 'SELLER'}
-			<button use:tooltip={'Adicionar loja'} class="button blue">
+			<a href="/shops/new" use:tooltip={{ text: 'Adicionar Loja' }} class="button blue">
 				<i class="fa fa-add" />
-			</button>
+			</a>
 		{/if}
 	</SignedIn>
 </section>

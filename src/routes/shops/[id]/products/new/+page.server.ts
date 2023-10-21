@@ -80,7 +80,7 @@ export const actions: Actions = {
 			const imageUrl = `./static/products/${fileName}`;
 
 			await sharp(await photo.arrayBuffer())
-				.resize({ width: 512, height: 512 })
+				.resize({ width: 256, height: 256 })
 				.toFormat('jpg')
 				.toFile(imageUrl);
 

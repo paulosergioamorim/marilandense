@@ -39,7 +39,7 @@
 			</SignedIn>
 			<IsOwner>
 				<a
-					href="/shops/{product.shopId}/products/new?update=${product.id}"
+					href="/shops/{product.shopId}/products/new?update={product.id}"
 					use:tooltip={'Editar produto'}
 					class="button blue"
 				>

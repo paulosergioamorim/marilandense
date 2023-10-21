@@ -5,9 +5,9 @@
 	import type { PageData } from './$types';
 	import { setContext } from 'svelte';
 	import IsNotOwner from '$lib/components/ui/IsNotOwner.svelte';
-	import { tooltip } from '$lib/utils';
 	import BuyModal from '$lib/components/ui/BuyModal.svelte';
 	import { createModalStore } from '$lib/stores';
+	import { tooltip } from '$lib';
 
 	let product: Prisma.Product | null = null;
 
@@ -47,13 +47,17 @@
 <IsOwner>
 	<div class="button-group">
 		<a
-			use:tooltip={'Adicionar produto'}
+			use:tooltip={{ text: 'Adicionar produto' }}
 			href="/shops/{data.shop.id}/products/new"
 			class="button blue"
 		>
 			<i class="fa fa-add" />
 		</a>
-		<a use:tooltip={'Editar loja'} href="/shops/new?update=${data.shop.id}" class="button green">
+		<a
+			use:tooltip={{ text: 'Editar loja' }}
+			href="/shops/new?update={data.shop.id}"
+			class="button green"
+		>
 			<i class="fa fa-edit" />
 		</a>
 	</div>
