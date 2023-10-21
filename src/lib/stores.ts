@@ -1,8 +1,8 @@
 import { writable } from 'svelte/store';
 
-export type ShowModalStoreType = ReturnType<typeof showModalStore>;
+export type CreateModalStoreType = ReturnType<typeof createModalStore>;
 
-export function showModalStore() {
+export function createModalStore() {
 	const { set, subscribe, update } = writable(false);
 
 	function showModal() {

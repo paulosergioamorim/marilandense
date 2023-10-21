@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { goto, invalidate } from '$app/navigation';
-	import type { ShowModalStoreType } from '$lib/stores';
+	import type { CreateModalStoreType } from '$lib/stores';
 	import Modal from './Modal.svelte';
 	import type Prisma from '@prisma/client';
 
 	let amount = 1;
 
 	export let product: Prisma.Product | null;
-	export let modalStore: ShowModalStoreType;
+	export let modalStore: CreateModalStoreType;
 </script>
 
 <Modal {modalStore} let:hideModal>

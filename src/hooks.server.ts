@@ -16,12 +16,16 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	const payload = verify(token, JWT_PRIVATE_KEY) as JwtPayload;
-
 	const currentUser = await prisma.user.findFirst({
 		where: {
 			id: payload.id
 		}
 	});
+
+	if (!currentUser) {
+		event.locals.currentUser = null;
+		return resolve(event);
+	}
 
 	event.locals.currentUser = currentUser;
 

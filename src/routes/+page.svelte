@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Product from '$lib/components/Product.svelte';
 	import BuyModal from '$lib/components/ui/BuyModal.svelte';
-	import { showModalStore } from '$lib/stores';
+	import { createModalStore } from '$lib/stores';
 	import type { PageData } from './$types';
 	import type Prisma from '@prisma/client';
 
@@ -12,7 +12,7 @@
 		if (product) modalStore.showModal();
 	}
 
-	const modalStore = showModalStore();
+	const modalStore = createModalStore();
 
 	export let data: PageData;
 </script>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { showModalStore } from '$lib/stores';
+	import { createModalStore } from '$lib/stores';
 	import { rolesMap, tooltip } from '$lib/utils';
 	import Modal from './Modal.svelte';
 	import SignedIn from './SignedIn.svelte';
@@ -19,10 +19,10 @@
 		return $page.url.pathname.startsWith(href);
 	};
 
-	const modalStore = showModalStore();
+	const modalStore = createModalStore();
 </script>
 
-<SignedIn let:currentUser>
+<SignedIn let:currentUser let:deleteUser>
 	<Modal {modalStore} let:hideModal>
 		<h2>Olá, {currentUser.name}</h2>
 		<p>
@@ -31,13 +31,20 @@
 			Endereço: {currentUser.address} <br />
 			Função: {rolesMap.get(currentUser.role)} <br />
 		</p>
-		<a href="/register?update" on:click={hideModal} class="button blue">Atualizar</a>
+		<div class="button-group">
+			<a href="/register?update" on:click={hideModal} class="button blue">Atualizar</a>
+			<button
+				type="button"
+				class="button salmon"
+				on:click={async () => (await deleteUser()) && hideModal()}>Excluir conta</button
+			>
+		</div>
 	</Modal>
 </SignedIn>
 
 <nav class="navbar navbar-expand-lg">
 	<div class="container-fluid">
-		<a class="navbar-brand" href="/"> Marilandense </a>
+		<a class="navbar-brand" href="/">Marilandense</a>
 		<button
 			class="navbar-toggler"
 			type="button"

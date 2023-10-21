@@ -6,7 +6,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { enhance } from '$app/forms';
 	import { invalidate } from '$app/navigation';
-	import { link, tooltip } from '$lib/utils';
+	import { tooltip } from '$lib/utils';
 
 	const fmt = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 
