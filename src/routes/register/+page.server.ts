@@ -1,8 +1,7 @@
 import { fail } from '@sveltejs/kit';
 import type { Actions } from './$types';
-import { prisma } from '$lib/server/prisma';
+import { prisma, setAuthCookies } from '$lib/server';
 import { hash } from 'bcryptjs';
-import { setAuthCookies } from '$lib/server/cookies';
 import type { UserRole } from '@prisma/client';
 
 export const actions: Actions = {

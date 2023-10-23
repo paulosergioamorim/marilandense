@@ -1,4 +1,4 @@
-import { prisma } from '$lib/server/prisma';
+import { prisma } from '$lib/server';
 import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -22,7 +22,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions: Actions = {
 	async increaseAmount({ locals, request }) {
 		const formData = await request.formData();
-		const id = formData.get('id') as string;
+		const id = Number(formData.get('id'));
 
 		if (!locals.currentUser) return fail(403, { success: false, message: 'Não autorizado' });
 
@@ -57,7 +57,7 @@ export const actions: Actions = {
 	},
 	async decreaseAmount({ locals, request }) {
 		const formData = await request.formData();
-		const id = formData.get('id') as string;
+		const id = Number(formData.get('id'));
 
 		if (!locals.currentUser) return fail(403, { success: false, message: 'Não autorizado' });
 
@@ -80,7 +80,7 @@ export const actions: Actions = {
 	},
 	async deleteOrder({ locals, request }) {
 		const formData = await request.formData();
-		const id = formData.get('id') as string;
+		const id = Number(formData.get('id'));
 
 		if (!locals.currentUser) return fail(403, { success: false, message: 'Não autorizado' });
 
@@ -105,7 +105,7 @@ export const actions: Actions = {
 	},
 	async confirmOrder({ request }) {
 		const formData = await request.formData();
-		const id = formData.get('id') as string;
+		const id = Number(formData.get('id'));
 
 		const [product, order] = await prisma.$transaction([
 			prisma.product.findFirst({

@@ -25,14 +25,14 @@ model User {
 }
 
 model Tag {
-  id       String    @id @default(uuid())
+  id       Int       @id @default(autoincrement())
   title    String    @unique
   shops    Shop[]
   products Product[]
 }
 
 model Shop {
-  id          String     @id @default(uuid())
+  id          Int        @id @default(autoincrement())
   name        String
   description String
   address     String
@@ -44,15 +44,14 @@ model Shop {
 }
 
 model Product {
-  id          String   @id @default(uuid())
+  id          Int      @id @default(autoincrement())
   name        String
   description String
   price       Float
   avaliable   Int
-  shopId      String
+  shopId      Int
   imageUrl    String?
-  updatedAt   DateTime @updatedAt
-  tagId       String
+  tagId       Int
   tag         Tag      @relation(fields: [tagId], references: [id])
   shop        Shop     @relation(fields: [shopId], references: [id])
   orders      Order[]
@@ -60,8 +59,8 @@ model Product {
 }
 
 model Order {
-  id        String      @id @default(uuid())
-  productId String
+  id        Int         @id @default(autoincrement())
+  productId Int
   userId    String
   amount    Int
   product   Product     @relation(fields: [productId], references: [id])
@@ -70,8 +69,8 @@ model Order {
 }
 
 model Review {
-  id        String  @id @default(uuid())
-  productId String
+  id        Int     @id @default(autoincrement())
+  productId Int
   userId    String
   title     String
   content   String

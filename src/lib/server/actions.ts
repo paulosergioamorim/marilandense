@@ -3,7 +3,7 @@ import { prisma } from './prisma';
 
 export const buyProduct: Action = async ({ locals, request }) => {
 	const formData = await request.formData();
-	const productId = formData.get('id') as string;
+	const productId = Number(formData.get('id'));
 	const amount = Number(formData.get('amount'));
 
 	if (!locals.currentUser) return fail(403, { success: false, message: 'Não autorizado' });

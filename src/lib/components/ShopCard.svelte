@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type Prisma from '@prisma/client';
-	import Tag from './Tag.svelte';
+	import type { Shop, Tag } from '@prisma/client';
+	import TagTile from './TagTile.svelte';
 	import { page } from '$app/stores';
 
-	export let shop: Prisma.Shop & { tags: Prisma.Tag[] };
+	export let shop: Shop & { tags: Tag[] };
 </script>
 
 <div class="shop-card">
@@ -14,7 +14,7 @@
 	</p>
 	<div class="tag-group">
 		{#each shop.tags as tag}
-			<Tag {tag} />
+			<TagTile {tag} />
 		{/each}
 	</div>
 	<br />

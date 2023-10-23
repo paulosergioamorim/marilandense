@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Order from '$lib/components/Order.svelte';
+	import { OrderCard } from '$lib/components';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -13,7 +13,7 @@
 	<h2 class="text-center">Carrinho</h2>
 	<div class="d-flex justify-content-center gap-5">
 		{#each data.orders as order}
-			<Order {order} />
+			<OrderCard {order} />
 		{/each}
 	</div>
 </section>

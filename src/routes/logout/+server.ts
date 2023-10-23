@@ -1,5 +1,4 @@
-import { deleteAuthCookies } from '$lib/server/cookies';
-import { prisma } from '$lib/server/prisma';
+import { prisma, deleteAuthCookies } from '$lib/server';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 

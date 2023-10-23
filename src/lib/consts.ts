@@ -1,13 +1,14 @@
-import type { UserRole, ShopStatus, OrderStatus } from "@prisma/client";
+import type { UserRole, ShopStatus, OrderStatus } from '@prisma/client';
 
 export const fmt = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 
-export const status = {
-	role: new Map<UserRole, string>([
-		['ADMIN', 'Administrador'],
-		['CUSTOMER', 'Cliente'],
-		['SELLER', 'Vendedor']
-	]),
+export const rolesMap = new Map<UserRole, string>([
+	['ADMIN', 'Administrador'],
+	['CUSTOMER', 'Cliente'],
+	['SELLER', 'Vendedor']
+]);
+
+export const statusMap = {
 	shop: new Map<ShopStatus, string>([
 		['APPROVED', 'Aprovada'],
 		['NOT_APPROVED', 'Não aprovada'],

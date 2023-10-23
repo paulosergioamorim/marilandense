@@ -1,14 +1,11 @@
 <script lang="ts">
-	import type Prisma from '@prisma/client';
-	import SignedIn from './ui/SignedIn.svelte';
-	import Tag from './Tag.svelte';
-	import IsOwner from './ui/IsOwner.svelte';
+	import type { Product, Tag } from '@prisma/client';
 	import { createEventDispatcher } from 'svelte';
 	import { enhance } from '$app/forms';
 	import { invalidate } from '$app/navigation';
-	import { tooltip } from '$lib/utils';
-
-	const fmt = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+	import { fmt, tooltip } from '$lib';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import { IsOwner, SignedIn, TagTile } from '.';
 
 	const dispatch = createEventDispatcher();
 
@@ -16,31 +13,38 @@
 		dispatch('buy', { product });
 	}
 
-	export let product: Prisma.Product & { tag: Prisma.Tag };
+	const deleteProductSubmit: SubmitFunction = ({ cancel }) => {
+		if (!confirm('Tem certeza que deseja excluir esse produto?')) return cancel();
+		return async () => await invalidate('products');
+	};
+
+	export let product: Product & { tag: Tag };
 </script>
 
-<div class="product">
+<div class="product-card">
 	<span class="product-avaliable">{product.avaliable}</span>
 	<img src={product.imageUrl} alt={product.name} class="product-image" />
 	<div class="product-body">
 		<h5 class="product-name">{product.name}</h5>
 		<p class="product-description">{product.description}</p>
-		<p class="product-price">{fmt.format(product.price)}</p>
+		<div class="product-price">{fmt.format(product.price)}</div>
 		<div class="tag-group">
-			<Tag tag={product.tag} />
+			<TagTile tag={product.tag} />
 		</div>
 		<div class="button-group">
 			<SignedIn>
 				{#if product.avaliable > 0}
-					<button use:tooltip={'Adicionar ao carrinho'} on:click={buyClick} class="button green"
-						><i class="fa fa-cart-shopping" /></button
+					<button
+						use:tooltip={{ text: 'Adicionar ao carrinho' }}
+						on:click={buyClick}
+						class="button green"><i class="fa fa-cart-shopping" /></button
 					>
 				{/if}
 			</SignedIn>
 			<IsOwner>
 				<a
 					href="/shops/{product.shopId}/products/new?update={product.id}"
-					use:tooltip={'Editar produto'}
+					use:tooltip={{ text: 'Editar produto' }}
 					class="button blue"
 				>
 					<i class="fa fa-edit" />
@@ -49,14 +53,11 @@
 					action="?/deleteProduct"
 					method="post"
 					class="d-inline"
-					use:enhance={({ formData, cancel }) => {
-						if (!confirm('Tem certeza que deseja excluir esse produto?')) return cancel();
-						formData.append('id', product.id);
-						return async () => await invalidate('products');
-					}}
+					use:enhance={deleteProductSubmit}
 				>
+					<input type="hidden" name="id" value={product.id} />
 					<button
-						use:tooltip={'Excluir produto'}
+						use:tooltip={{ text: 'Excluir produto' }}
 						formaction="?/deleteProduct"
 						type="submit"
 						class="button salmon"><i class="fa fa-trash" /></button
@@ -68,14 +69,21 @@
 </div>
 
 <style>
-	.product {
+	.product-card {
 		display: flex;
 		flex-direction: column;
 		border: 4px var(--gray) solid;
 		border-radius: 24px;
 		overflow: visible;
 		position: relative;
-		width: clamp(25%, 300px, 100% - 1rem);
+		width: 250px;
+		height: 500px;
+	}
+
+	@media screen and (width <= 578px) {
+		.product-card {
+			width: calc(100% - 1rem);
+		}
 	}
 
 	.product-image {
@@ -86,6 +94,11 @@
 		display: flex;
 		flex-direction: column;
 		padding: 12px;
+		height: 100%;
+	}
+
+	.product-description {
+		font-size: 12px;
 	}
 
 	.product-name {

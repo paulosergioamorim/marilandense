@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { shopStatusMap } from '$lib/utils';
+	import { statusMap } from '$lib';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -38,11 +38,8 @@
 							<div class="row row-cols-3">
 								{#each data.tags as tag}
 									<div class="d-flex align-items-center">
-										<form
-											action="?/removeTag"
-											method="post"
-											use:enhance={({ formData }) => formData.append('id', tag.id)}
-										>
+										<form action="?/removeTag" method="post" use:enhance>
+											<input type="hidden" name="id" value={tag.id} />
 											<button type="submit" class="btn btn-link link-danger">
 												<i class="fa fa-trash" />
 											</button>
@@ -101,17 +98,14 @@
 									<td>{shop.address}</td>
 									<td>{shop.owner.name}</td>
 									<td>
-										<form
-											action="?/toggleShopStatus"
-											method="post"
-											use:enhance={({ formData }) => formData.append('id', shop.id)}
-										>
+										<form action="?/toggleShopStatus" method="post" use:enhance>
+											<input type="hidden" name="id" value={shop.id} />
 											<div class="row">
 												<div class="col-4">
 													<input
 														disabled
 														type="text"
-														value={shopStatusMap.get(shop.status)}
+														value={statusMap.shop.get(shop.status)}
 														class="form-control"
 													/>
 												</div>
@@ -119,7 +113,7 @@
 													<div class="row">
 														<div class="col">
 															<select name="status" id="status" class="form-control">
-																{#each shopStatusMap as [key, status]}
+																{#each statusMap.shop as [key, status]}
 																	<option value={key}>{status}</option>
 																{/each}
 															</select>

@@ -1,15 +1,11 @@
 <script lang="ts">
-	import Product from '$lib/components/Product.svelte';
-	import IsOwner from '$lib/components/ui/IsOwner.svelte';
-	import type Prisma from '@prisma/client';
 	import type { PageData } from './$types';
 	import { setContext } from 'svelte';
-	import IsNotOwner from '$lib/components/ui/IsNotOwner.svelte';
-	import BuyModal from '$lib/components/ui/BuyModal.svelte';
-	import { createModalStore } from '$lib/stores';
-	import { tooltip } from '$lib';
+	import { tooltip, createModalStore } from '$lib';
+	import { BuyModal, IsNotOwner, IsOwner, ProductCard } from '$lib/components';
+	import type { Product } from '@prisma/client';
 
-	let product: Prisma.Product | null = null;
+	let product: Product | null = null;
 
 	function buyProductHandle(e: CustomEvent) {
 		product = e.detail.product;
@@ -39,7 +35,7 @@
 	<br />
 	<div class="flex-wrapper">
 		{#each data.shop.products as product}
-			<Product {product} on:buy={buyProductHandle} />
+			<ProductCard {product} on:buy={buyProductHandle} />
 		{/each}
 	</div>
 </section>

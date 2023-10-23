@@ -1,11 +1,10 @@
 <script lang="ts">
-	import Product from '$lib/components/Product.svelte';
-	import BuyModal from '$lib/components/ui/BuyModal.svelte';
+	import { BuyModal, ProductCard } from '$lib/components';
 	import { createModalStore } from '$lib/stores';
 	import type { PageData } from './$types';
-	import type Prisma from '@prisma/client';
+	import type { Product } from '@prisma/client';
 
-	let product: Prisma.Product | null = null;
+	let product: Product | null = null;
 
 	function buyProductHandle(e: CustomEvent) {
 		product = e.detail.product;
@@ -32,7 +31,7 @@
 
 	<div class="flex-wrapper">
 		{#each data.products as product}
-			<Product on:buy={buyProductHandle} {product} />
+			<ProductCard on:buy={buyProductHandle} {product} />
 		{/each}
 	</div>
 </section>

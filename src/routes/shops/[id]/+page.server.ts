@@ -1,12 +1,13 @@
-import { prisma } from '$lib/server/prisma';
+import { prisma, buyProduct } from '$lib/server';
 import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { rm } from 'fs/promises';
-import { buyProduct } from '$lib/server/actions';
 
 export const load: PageServerLoad = async ({ params, depends }) => {
 	depends('products');
-	const { id } = params;
+	const id = Number(params.id);
+
+	if (isNaN(id)) throw error(404, 'ID inválido.');
 
 	const shop = await prisma.shop.findFirst({
 		where: {
@@ -32,7 +33,7 @@ export const actions: Actions = {
 	buyProduct,
 	async deleteProduct({ request }) {
 		const formData = await request.formData();
-		const id = formData.get('id') as string;
+		const id = Number(formData.get('id'));
 
 		try {
 			const product = await prisma.product.delete({

@@ -1,11 +1,13 @@
-import { prisma } from '$lib/server/prisma';
+import { prisma } from '$lib/server';
 import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import sharp from 'sharp';
 import type { Product } from '@prisma/client';
 
 export const load: PageServerLoad = async ({ locals, params, url }) => {
-	const { id } = params;
+	const id = Number(params.id);
+
+	if (isNaN(id)) throw error(404, 'ID inválido.');
 
 	const shop = await prisma.shop.findFirst({
 		where: {
@@ -20,9 +22,11 @@ export const load: PageServerLoad = async ({ locals, params, url }) => {
 
 	if (locals.currentUser?.id !== shop?.userId) throw error(401, 'Não autorizado');
 
-	const updateId = url.searchParams.get('update');
+	const updateId = Number(url.searchParams.get('update'));
 
 	if (!updateId) return { shop };
+
+	if (isNaN(updateId)) throw error(404, 'ID inválido.');
 
 	const product = await prisma.product.findFirst({
 		where: {
@@ -40,10 +44,10 @@ export const actions: Actions = {
 		const description = formData.get('description') as string;
 		const price = Number(formData.get('price'));
 		const avaliable = Number(formData.get('avaliable'));
-		const tagId = formData.get('tag') as string;
+		const tagId = Number(formData.get('tag'));
 		const photo = formData.get('photo') as File;
-		const shopId = params.id;
-		const updateId = url.searchParams.get('update');
+		const shopId = Number(params.id);
+		const updateId = Number(url.searchParams.get('update'));
 
 		let product: Product;
 

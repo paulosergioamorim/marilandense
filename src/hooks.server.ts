@@ -1,5 +1,5 @@
 import { JWT_PRIVATE_KEY } from '$env/static/private';
-import { prisma } from '$lib/server/prisma';
+import { prisma } from '$lib/server';
 import type { Handle } from '@sveltejs/kit';
 import { verify, type JwtPayload } from 'jsonwebtoken';
 
@@ -8,10 +8,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	if (!token) {
 		event.locals.currentUser = null;
-
-		if (event.url.pathname === '/register' && event.url.searchParams.has('update'))
-			event.url.searchParams.delete('update');
-
 		return resolve(event);
 	}
 

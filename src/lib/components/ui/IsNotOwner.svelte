@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type Prisma from '@prisma/client';
+	import type { Shop } from '@prisma/client';
 	import { getContext } from 'svelte';
 	import SignedIn from './SignedIn.svelte';
 	import SignedOut from './SignedOut.svelte';
 
-	const shop = getContext<Prisma.Shop | null>('shop');
+	const shop = getContext<Shop | null>('shop');
 </script>
 
 <SignedIn let:currentUser>

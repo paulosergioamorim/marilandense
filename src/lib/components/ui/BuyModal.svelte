@@ -15,8 +15,7 @@
 	<form
 		action="?/buyProduct"
 		method="post"
-		use:enhance={({ formData }) => {
-			formData.append('id', String(product?.id));
+		use:enhance={() => {
 			return async () => {
 				hideModal();
 				await invalidate('products');
@@ -25,6 +24,7 @@
 		}}
 	>
 		<h2>Comprar {product?.name}</h2>
+		<input type="hidden" name="id" value={product?.id} />
 		<div class="form-group mb-2">
 			<label for="amount">Quantidade</label>
 			<div class="button-group mt-2">

@@ -1,13 +1,10 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { saleStatusMap, tooltip } from '$lib/utils';
-	import type Prisma from '@prisma/client';
-	import Tag from './Tag.svelte';
-	import IsNotOwner from './ui/IsNotOwner.svelte';
+	import { fmt, statusMap, tooltip } from '$lib';
+	import { IsNotOwner, TagTile } from '.';
+	import type { Order, Product, Tag } from '@prisma/client';
 
-	const fmt = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
-
-	export let order: Prisma.Order & { product: Prisma.Product & { tag: Prisma.Tag } };
+	export let order: Order & { product: Product & { tag: Tag } };
 </script>
 
 <div class="order">
@@ -19,12 +16,13 @@
 			{fmt.format(order.product.price * order.amount)} <br />
 		</p>
 		<div class="tag-group">
-			<Tag tag={order.product.tag} />
-			<span class="tag">{saleStatusMap.get(order.status)}</span>
+			<TagTile tag={order.product.tag} />
+			<span class="tag">{statusMap.order.get(order.status)}</span>
 		</div>
 		<IsNotOwner>
 			<div class="button-group">
-				<form method="post" use:enhance={({ formData }) => formData.append('id', order.id)}>
+				<form method="post" use:enhance>
+					<input type="hidden" name="id" value={order.id} />
 					{#if order.status === 'PENDING'}
 						<button
 							disabled={order.amount === 1}
@@ -46,7 +44,7 @@
 							formaction="?/confirmOrder"
 							type="submit"
 							class="button green"
-							use:tooltip={'Confirmar'}
+							use:tooltip={{ text: 'Confirmar' }}
 						>
 							<i class="fa fa-shopping-bag" />
 						</button>
@@ -55,7 +53,7 @@
 						formaction="?/deleteOrder"
 						type="submit"
 						class="button salmon"
-						use:tooltip={'Excluir'}
+						use:tooltip={{ text: 'Excluir' }}
 					>
 						<i class="fa fa-trash" />
 					</button>

@@ -1,5 +1,4 @@
-import { buyProduct } from '$lib/server/actions';
-import { prisma } from '$lib/server/prisma';
+import { prisma, buyProduct } from '$lib/server';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ depends }) => {

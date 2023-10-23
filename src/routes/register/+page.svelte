@@ -1,12 +1,17 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { delay, rolesMap } from '$lib/utils';
+	import { onMount } from 'svelte';
 	import type { ActionData } from './$types';
 
 	$: currentUser = $page.data.currentUser;
 	$: update = $page.url.searchParams.has('update');
+
+	onMount(async () => {
+		if (update && !currentUser) await goto('/register');
+	});
 
 	export let form: ActionData;
 </script>

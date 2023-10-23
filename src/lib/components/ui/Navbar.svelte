@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { createModalStore } from '$lib/stores';
-	import { rolesMap, tooltip } from '$lib/utils';
-	import Modal from './Modal.svelte';
-	import SignedIn from './SignedIn.svelte';
-	import SignedOut from './SignedOut.svelte';
+	import { rolesMap, tooltip } from '$lib';
+	import { derived } from 'svelte/store';
+	import { Modal, SignedIn, SignedOut } from '..';
 
 	const items = [
 		{ name: 'Home', href: '/' },
@@ -14,10 +13,12 @@
 		{ name: 'Sobre', href: '/about' }
 	];
 
-	$: isCurrent = (href: string) => {
-		if (href === '/') return $page.url.pathname === href;
-		return $page.url.pathname.startsWith(href);
-	};
+	const isCurrent = derived(page, ($page) => {
+		return function (href: string) {
+			if (href === '/') return $page.url.pathname === href;
+			return $page.url.pathname.startsWith(href);
+		};
+	});
 
 	const modalStore = createModalStore();
 </script>
@@ -63,8 +64,8 @@
 						<a
 							class="nav-link"
 							class:disabled={item.href === '/dashboard' && !$page.data.currentUser}
-							class:active={isCurrent(item.href)}
-							aria-current={isCurrent(item.href) && 'page'}
+							class:active={$isCurrent(item.href)}
+							aria-current={$isCurrent(item.href) && 'page'}
 							href={item.href}
 						>
 							{item.name}
@@ -74,7 +75,11 @@
 			</ul>
 			<div class="button-group">
 				<SignedIn let:signOut>
-					<button use:tooltip={'Usuário'} on:click={modalStore.showModal} class="button green">
+					<button
+						use:tooltip={{ text: 'Usuário' }}
+						on:click={modalStore.showModal}
+						class="button green"
+					>
 						<i class="fa fa-user" />
 					</button>
 					<button on:click={signOut} class="button salmon" type="submit">Sair</button>

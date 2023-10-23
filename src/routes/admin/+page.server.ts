@@ -1,4 +1,4 @@
-import { prisma } from '$lib/server/prisma';
+import { prisma } from '$lib/server';
 import type { ShopStatus } from '@prisma/client';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -29,7 +29,7 @@ export const actions: Actions = {
 	},
 	async removeTag({ request }) {
 		const formData = await request.formData();
-		const id = formData.get('id') as string;
+		const id = Number(formData.get('id'));
 
 		await prisma.tag.delete({
 			where: {
@@ -39,7 +39,7 @@ export const actions: Actions = {
 	},
 	async toggleShopStatus({ request }) {
 		const formData = await request.formData();
-		const id = formData.get('id') as string;
+		const id = Number(formData.get('id'));
 		const status = formData.get('status') as ShopStatus;
 
 		await prisma.shop.update({

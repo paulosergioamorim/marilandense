@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { tooltip } from '$lib';
-	import Shop from '$lib/components/Shop.svelte';
-	import SignedIn from '$lib/components/ui/SignedIn.svelte';
+	import { ShopCard, SignedIn } from '$lib/components';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -16,7 +15,7 @@
 	<br />
 	<div class="flex-wrapper">
 		{#each data.shops as shop}
-			<Shop {shop} />
+			<ShopCard {shop} />
 		{/each}
 	</div>
 	<SignedIn let:currentUser>
