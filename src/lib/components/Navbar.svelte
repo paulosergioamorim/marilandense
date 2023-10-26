@@ -3,7 +3,7 @@
 	import { createModalStore } from '$lib/stores';
 	import { rolesMap, tooltip } from '$lib';
 	import { derived } from 'svelte/store';
-	import { Modal, SignedIn, SignedOut } from '..';
+	import { Modal, SignedIn, SignedOut } from '.';
 
 	const items = [
 		{ name: 'Home', href: '/' },

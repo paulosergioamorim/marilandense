@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
 	import { page } from '$app/stores';
-	import { delay } from '$lib/utils';
+	import { delay } from '$lib';
 	import type { ActionData, PageData } from './$types';
 
 	$: update = $page.url.searchParams.has('update');

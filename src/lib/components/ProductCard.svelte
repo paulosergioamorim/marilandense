@@ -98,7 +98,7 @@
 	}
 
 	.product-description {
-		font-size: 12px;
+		font-size: 0.8rem;
 	}
 
 	.product-name {

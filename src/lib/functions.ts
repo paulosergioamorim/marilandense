@@ -1,4 +1,4 @@
-import tippy from "tippy.js";
+import tippy from 'tippy.js';
 
 export function delay(ms: number) {
 	return new Promise((resolve) => setTimeout(resolve, ms));

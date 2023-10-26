@@ -2,7 +2,7 @@
 	import { applyAction, enhance } from '$app/forms';
 	import { goto, invalidateAll } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { delay, rolesMap } from '$lib/utils';
+	import { delay, rolesMap } from '$lib';
 	import { onMount } from 'svelte';
 	import type { ActionData } from './$types';
 

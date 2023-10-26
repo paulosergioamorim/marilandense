@@ -4,6 +4,7 @@
 	import { tooltip, createModalStore } from '$lib';
 	import { BuyModal, IsNotOwner, IsOwner, ProductCard } from '$lib/components';
 	import type { Product } from '@prisma/client';
+	import OrderCard from '$lib/components/OrderCard.svelte';
 
 	let product: Product | null = null;
 
@@ -25,7 +26,7 @@
 
 <BuyModal {modalStore} {product} />
 
-<section class="container mb-3">
+<section class="container mb-3" id="products">
 	<h2 class="text-center">
 		<IsOwner>Meus produtos</IsOwner>
 		<IsNotOwner>
@@ -39,6 +40,18 @@
 		{/each}
 	</div>
 </section>
+
+<IsOwner>
+	<section class="container mb-3" id="sales">
+		<h2 class="text-center">Minhas vendas</h2>
+		<br />
+		<div class="flex-wrapper">
+			{#each data.orders ?? [] as order}
+				<OrderCard {order} />
+			{/each}
+		</div>
+	</section>
+</IsOwner>
 
 <IsOwner>
 	<div class="button-group">

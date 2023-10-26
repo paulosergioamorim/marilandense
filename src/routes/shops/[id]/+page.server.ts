@@ -1,9 +1,9 @@
-import { prisma, buyProduct } from '$lib/server';
+import { prisma, buyProductAction } from '$lib/server';
 import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { rm } from 'fs/promises';
 
-export const load: PageServerLoad = async ({ params, depends }) => {
+export const load: PageServerLoad = async ({ locals, params, depends }) => {
 	depends('products');
 	const id = Number(params.id);
 
@@ -26,11 +26,29 @@ export const load: PageServerLoad = async ({ params, depends }) => {
 
 	if (!shop) throw error(404, 'Loja não encontrada');
 
-	return { shop };
+	if (locals.currentUser?.id !== shop.userId) return { shop };
+
+	const orders = await prisma.order.findMany({
+		where: {
+			product: {
+				shopId: id
+			}
+		},
+		include: {
+			product: {
+				include: {
+					tag: true
+				}
+			},
+			buyer: true
+		}
+	});
+
+	return { shop, orders };
 };
 
 export const actions: Actions = {
-	buyProduct,
+	buyProduct: buyProductAction,
 	async deleteProduct({ request }) {
 		const formData = await request.formData();
 		const id = Number(formData.get('id'));

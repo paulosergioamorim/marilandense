@@ -1,8 +1,10 @@
 import { prisma } from '$lib/server';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
+	if (!locals.currentUser) throw redirect(301, '/login');
+
 	const orders = await prisma.order.findMany({
 		where: {
 			userId: locals.currentUser?.id

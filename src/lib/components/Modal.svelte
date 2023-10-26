@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { CreateModalStoreType } from '$lib/stores';
-	import { delay } from '$lib/utils';
+	import { delay } from '$lib';
 
 	let el: HTMLDialogElement | null = null;
 

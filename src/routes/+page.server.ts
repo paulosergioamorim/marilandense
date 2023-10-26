@@ -1,4 +1,4 @@
-import { prisma, buyProduct } from '$lib/server';
+import { prisma, buyProductAction } from '$lib/server';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ depends }) => {
@@ -28,5 +28,5 @@ export const load: PageServerLoad = async ({ depends }) => {
 };
 
 export const actions: Actions = {
-	buyProduct
+	buyProduct: buyProductAction
 };

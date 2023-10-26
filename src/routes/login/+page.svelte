@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
-	import { delay } from '$lib/utils';
+	import { delay } from '$lib';
 	import type { ActionData } from './$types';
 
 	export let form: ActionData;

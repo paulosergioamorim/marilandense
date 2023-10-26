@@ -1,3 +1,3 @@
 export { prisma } from './prisma';
-export { buyProduct } from './actions';
+export { buyProductAction } from './actions';
 export { setAuthCookies, deleteAuthCookies } from './cookies';

@@ -2,7 +2,7 @@
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { delay } from '$lib/utils';
+	import { delay } from '$lib';
 	import type { PageData, ActionData } from './$types';
 
 	$: update = $page.url.searchParams.has('update');

@@ -1,7 +1,7 @@
 import { fail, type Action } from '@sveltejs/kit';
 import { prisma } from './prisma';
 
-export const buyProduct: Action = async ({ locals, request }) => {
+export const buyProductAction: Action = async ({ locals, request }) => {
 	const formData = await request.formData();
 	const productId = Number(formData.get('id'));
 	const amount = Number(formData.get('amount'));
