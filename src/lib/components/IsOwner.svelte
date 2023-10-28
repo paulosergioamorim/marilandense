@@ -6,8 +6,8 @@
 	const shop = getContext<Shop | null>('shop');
 </script>
 
-<SignedIn let:currentUser>
-	{#if currentUser.id === shop?.userId}
+<SignedIn let:user>
+	{#if user.id === shop?.userId}
 		<slot />
 	{/if}
 </SignedIn>

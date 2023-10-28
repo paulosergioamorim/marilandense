@@ -26,12 +26,15 @@ export const load: PageServerLoad = async ({ locals, params, depends }) => {
 
 	if (!shop) throw error(404, 'Loja não encontrada');
 
-	if (locals.currentUser?.id !== shop.userId) return { shop };
+	if (locals.user?.id !== shop.userId) return { shop };
 
 	const orders = await prisma.order.findMany({
 		where: {
 			product: {
 				shopId: id
+			},
+			status: {
+				not: 'PENDING'
 			}
 		},
 		include: {

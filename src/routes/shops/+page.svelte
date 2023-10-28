@@ -18,8 +18,8 @@
 			<ShopCard {shop} />
 		{/each}
 	</div>
-	<SignedIn let:currentUser>
-		{#if currentUser.role === 'SELLER'}
+	<SignedIn let:user>
+		{#if user.role === 'SELLER'}
 			<a href="/shops/new" use:tooltip={{ text: 'Adicionar Loja' }} class="button blue">
 				<i class="fa fa-add" />
 			</a>

@@ -2,6 +2,6 @@
 	import { page } from '$app/stores';
 </script>
 
-{#if !$page.data.currentUser}
+{#if !$page.data.user}
 	<slot />
 {/if}

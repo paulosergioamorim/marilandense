@@ -3,11 +3,11 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	if (!locals.currentUser) throw redirect(301, '/login');
+	if (!locals.user) throw redirect(301, '/login');
 
 	const orders = await prisma.order.findMany({
 		where: {
-			userId: locals.currentUser?.id
+			userId: locals.user?.id
 		},
 		include: {
 			product: {
@@ -26,7 +26,7 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const id = Number(formData.get('id'));
 
-		if (!locals.currentUser) return fail(403, { success: false, message: 'Não autorizado' });
+		if (!locals.user) return fail(403, { success: false, message: 'Não autorizado' });
 
 		const [order, product] = await prisma.$transaction([
 			prisma.order.findFirst({ where: { id } }),
@@ -61,7 +61,7 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const id = Number(formData.get('id'));
 
-		if (!locals.currentUser) return fail(403, { success: false, message: 'Não autorizado' });
+		if (!locals.user) return fail(403, { success: false, message: 'Não autorizado' });
 
 		const order = await prisma.order.findFirst({ where: { id } });
 
@@ -84,7 +84,7 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const id = Number(formData.get('id'));
 
-		if (!locals.currentUser) return fail(403, { success: false, message: 'Não autorizado' });
+		if (!locals.user) return fail(403, { success: false, message: 'Não autorizado' });
 
 		const order = await prisma.order.delete({
 			where: {

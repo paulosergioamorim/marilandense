@@ -6,11 +6,11 @@ export const load: PageServerLoad = async ({ depends, url }) => {
 
 	const take = 10;
 	const skip = Number(url.searchParams.get('skip')) ?? 0;
-	const tag = url.searchParams.get('tag') ?? undefined;
+	const tag = url.searchParams.get('tag');
 
 	const count = await prisma.product.count();
 
-	const products = await prisma.product.findMany({
+	let products = await prisma.product.findMany({
 		include: {
 			tag: true,
 			orders: {
@@ -22,14 +22,16 @@ export const load: PageServerLoad = async ({ depends, url }) => {
 		where: {
 			shop: {
 				status: 'APPROVED'
-			},
-			tag: {
-				title: tag
 			}
 		},
 		skip,
 		take
 	});
+
+	if (tag)
+		products = products.filter((product) =>
+			new RegExp(tag.toLowerCase()).test(product.tag.title.toLowerCase())
+		);
 
 	return {
 		products,

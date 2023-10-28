@@ -35,10 +35,10 @@ export const actions: Actions = {
 		)
 			return fail(400, { success: false, message: 'Informações faltam.' });
 
-		if (update && locals.currentUser) {
+		if (update && locals.user) {
 			if (password !== '') {
 				const passwordHash = await hash(password, 10);
-				await prisma.user.update({ data: { passwordHash }, where: { id: locals.currentUser.id } });
+				await prisma.user.update({ data: { passwordHash }, where: { id: locals.user.id } });
 			}
 
 			await prisma.user.update({
@@ -50,7 +50,7 @@ export const actions: Actions = {
 					role
 				},
 				where: {
-					id: locals.currentUser.id
+					id: locals.user.id
 				}
 			});
 

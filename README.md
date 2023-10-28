@@ -1,38 +1,31 @@
-# create-svelte
+# Marilandense
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+PROJETO DE TCC
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
+## Executar num ambiente local
 
 ```bash
-# create a new project in the current directory
-npm create svelte@latest
+# baixe o projeto
+git clone https://github.com/paulosergioamorim/marilandense.git
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+cd ./marilandense
 
-## Developing
+# instale as dependências
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+npm i
 
-```bash
+# adicione as variáveis de ambiente (num arquivo .env)
+
+DATABASE_URL='my-database-url'
+JWT_PRIVATE_KEY='my-jwt-private-key'
+
+# executar o projeto
+
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+## Alunos
 
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+- Isadora dos Santos Massarioli
+- Paulo Sérgio Amorim Mõnico
+- Thalis Bacetti Drago

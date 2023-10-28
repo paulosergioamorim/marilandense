@@ -4,7 +4,7 @@ import { prisma } from '$lib/server';
 import type { Shop } from '@prisma/client';
 
 export const load: PageServerLoad = async ({ locals, url }) => {
-	if (locals.currentUser?.role !== 'SELLER')
+	if (locals.user?.role !== 'SELLER')
 		throw error(403, 'Essa página é permitida somente a vendedores.');
 
 	const tags = await prisma.tag.findMany();
@@ -37,7 +37,7 @@ export const actions: Actions = {
 		const tags = formData.getAll('tags').map((id) => Number(id));
 		const updateId = Number(url.searchParams.get('update'));
 
-		if (!locals.currentUser) return fail(403, { success: false, message: 'Não autorizado' });
+		if (!locals.user) return fail(403, { success: false, message: 'Não autorizado' });
 
 		let shop: Shop;
 
@@ -50,7 +50,7 @@ export const actions: Actions = {
 					tags: {
 						set: tags.map((tag) => ({ id: tag }))
 					},
-					userId: locals.currentUser.id
+					userId: locals.user.id
 				},
 				where: {
 					id: updateId
@@ -65,7 +65,7 @@ export const actions: Actions = {
 					tags: {
 						connect: tags.map((tag) => ({ id: tag }))
 					},
-					userId: locals.currentUser.id
+					userId: locals.user.id
 				}
 			});
 

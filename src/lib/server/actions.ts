@@ -6,7 +6,7 @@ export const buyProductAction: Action = async ({ locals, request }) => {
 	const productId = Number(formData.get('id'));
 	const amount = Number(formData.get('amount'));
 
-	if (!locals.currentUser) return fail(403, { success: false, message: 'Não autorizado' });
+	if (!locals.user) return fail(403, { success: false, message: 'Não autorizado' });
 
 	const product = await prisma.product.findFirst({ where: { id: productId } });
 
@@ -19,7 +19,7 @@ export const buyProductAction: Action = async ({ locals, request }) => {
 		data: {
 			productId,
 			amount,
-			userId: locals.currentUser?.id
+			userId: locals.user?.id
 		}
 	});
 

@@ -20,7 +20,7 @@ export const load: PageServerLoad = async ({ locals, params, url }) => {
 
 	if (!shop) throw error(404, 'Loja não encontrada');
 
-	if (locals.currentUser?.id !== shop?.userId) throw error(401, 'Não autorizado');
+	if (locals.user?.id !== shop?.userId) throw error(401, 'Não autorizado');
 
 	const updateId = Number(url.searchParams.get('update'));
 

@@ -2,48 +2,35 @@
 	import { page } from '$app/stores';
 	import { createModalStore } from '$lib/stores';
 	import { rolesMap, tooltip } from '$lib';
-	import { derived } from 'svelte/store';
 	import { Modal, SignedIn, SignedOut } from '.';
 
 	const items = [
-		{ name: 'Home', href: '/' },
+		{ name: 'Início', href: '/' },
 		{ name: 'Lojas', href: '/shops' },
 		{ name: 'Produtos', href: '/products' },
 		{ name: 'Carrinho', href: '/cart' },
 		{ name: 'Sobre', href: '/about' }
 	];
 
-	const isCurrent = derived(page, ($page) => {
-		return function (href: string) {
-			if (href === '/') return $page.url.pathname === href;
-			return $page.url.pathname.startsWith(href);
-		};
-	});
-
 	const modalStore = createModalStore();
 </script>
 
-<SignedIn let:currentUser let:deleteUser>
+<SignedIn let:user>
 	<Modal {modalStore} let:hideModal>
-		<h2>Olá, {currentUser.name}</h2>
+		<h2>Olá, {user.name}</h2>
 		<p>
-			Email: {currentUser.email} <br />
-			Telefone: {currentUser.phone} <br />
-			Endereço: {currentUser.address} <br />
-			Função: {rolesMap.get(currentUser.role)} <br />
+			Email: {user.email} <br />
+			Telefone: {user.phone} <br />
+			Endereço: {user.address} <br />
+			Função: {rolesMap.get(user.role)}
 		</p>
 		<div class="button-group">
 			<a href="/register?update" on:click={hideModal} class="button blue">Atualizar</a>
-			<button
-				type="button"
-				class="button salmon"
-				on:click={async () => (await deleteUser()) && hideModal()}>Excluir conta</button
-			>
 		</div>
 	</Modal>
 </SignedIn>
 
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
 	<div class="container-fluid">
 		<a class="navbar-brand" href="/">Marilandense</a>
 		<button
@@ -59,16 +46,17 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 			<ul class="navbar-nav me-auto">
-				{#each items as item}
+				{#each items as { name, href }}
+					{@const isCurrent =
+						href === '/' ? $page.url.pathname === href : $page.url.pathname.includes(href)}
 					<li class="nav-item">
 						<a
 							class="nav-link"
-							class:disabled={item.href === '/dashboard' && !$page.data.currentUser}
-							class:active={$isCurrent(item.href)}
-							aria-current={$isCurrent(item.href) && 'page'}
-							href={item.href}
+							class:active={isCurrent}
+							aria-current={isCurrent ? 'page' : false}
+							{href}
 						>
-							{item.name}
+							{name}
 						</a>
 					</li>
 				{/each}
@@ -92,3 +80,4 @@
 		</div>
 	</div>
 </nav>
+<br />

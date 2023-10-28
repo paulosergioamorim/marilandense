@@ -3,9 +3,19 @@
 	import { invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { delay } from '$lib';
-	import type { PageData, ActionData } from './$types';
+	import type { PageData, ActionData, SubmitFunction } from './$types';
 
 	$: update = $page.url.searchParams.has('update');
+
+	const createProductSubmit: SubmitFunction = async () => {
+		return async ({ result }) => {
+			await applyAction(result);
+			if (result.type !== 'success') return;
+			await delay(500);
+			await invalidate('products');
+			history.back();
+		};
+	};
 
 	export let data: PageData;
 	export let form: ActionData;
@@ -20,16 +30,10 @@
 	<form
 		method="post"
 		enctype="multipart/form-data"
-		use:enhance={() =>
-			async ({ result }) => {
-				await applyAction(result);
-				if (result.type !== 'success') return;
-				await delay(500);
-				await invalidate('products');
-				history.back();
-			}}
+		class="row g-3"
+		use:enhance={createProductSubmit}
 	>
-		<div class="form-group mb-2">
+		<div class="col-12">
 			<label for="name">Nome</label>
 			<input
 				type="text"
@@ -39,18 +43,19 @@
 				value={data.product?.name ?? ''}
 			/>
 		</div>
-		<div class="form-group mb-2">
+		<div class="col-12">
 			<label for="description">Descrição</label>
 			<input
 				type="text"
 				name="description"
 				id="description"
 				class="form-control"
+				placeholder="Fala um pouco sobre seu produto..."
 				value={data.product?.description ?? ''}
 			/>
 		</div>
-		<div class="form-group mb-2">
-			<label for="price">Preço</label>
+		<div class="col-6">
+			<label for="price">Preço (por unidade ou por quilo)</label>
 			<div class="input-group">
 				<span class="input-group-text">R$</span>
 				<input
@@ -62,8 +67,8 @@
 				/>
 			</div>
 		</div>
-		<div class="form-group mb-2">
-			<label for="avaliable">Quantidade disponível para venda</label>
+		<div class="col-6">
+			<label for="avaliable">Quantidade disponível para venda (unidades)</label>
 			<input
 				type="text"
 				name="avaliable"
@@ -72,7 +77,7 @@
 				value={data.product?.avaliable ?? ''}
 			/>
 		</div>
-		<div class="form-group mb-2">
+		<div class="col-6">
 			<label for="tag">Categoria</label>
 			<select name="tag" id="tag" class="form-control">
 				{#each data.shop.tags as tag}
@@ -80,13 +85,20 @@
 				{/each}
 			</select>
 		</div>
-		<div class="form-group mb-2">
+		<div class="col-6">
 			<label for="photo">Foto do produto</label>
 			<input type="file" accept="image/*" name="photo" id="photo" class="form-control" />
 		</div>
-		<div class="form-group mb-2">
-			<input type="submit" value="Enviar" class="button green" />
-			<input type="button" value="Cancelar" class="button salmon" on:click={() => history.back()} />
+		<div class="col-12">
+			<div class="button-group">
+				<input type="submit" value="Enviar" class="button green" />
+				<input
+					type="button"
+					value="Cancelar"
+					class="button salmon"
+					on:click={() => history.back()}
+				/>
+			</div>
 		</div>
 	</form>
 	{#if form?.message}

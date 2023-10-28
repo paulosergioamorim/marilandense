@@ -27,9 +27,18 @@
 
 <section class="container">
 	<h2 class="text-center">Produtos</h2>
-	<br />
-	<nav>
-		{#if pagesCount > 1}
+	<div class="row">
+		<div class="col-4">
+			<form action="/products" method="get" class="row g-3">
+				<div class="col">
+					<input type="text" name="tag" id="tag" class="form-control" placeholder="Categoria" />
+				</div>
+				<div class="col">
+					<input type="submit" value="Filtrar" class="button green" />
+				</div>
+			</form>
+		</div>
+		<nav class="col">
 			<ul class="pagination">
 				{#each Array(pagesCount) as _, i}
 					<li class="page-item">
@@ -37,8 +46,8 @@
 					</li>
 				{/each}
 			</ul>
-		{/if}
-	</nav>
+		</nav>
+	</div>
 	<div class="flex-wrapper">
 		{#each data.products as product}
 			<ProductCard on:buy={buyProductHandle} {product} />

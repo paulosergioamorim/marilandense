@@ -2,7 +2,7 @@ import { prisma } from '$lib/server';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	const currentUser = locals.currentUser;
+	const currentUser = locals.user;
 
 	const shops = await prisma.shop.findMany({
 		include: {

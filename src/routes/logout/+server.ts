@@ -5,8 +5,7 @@ import type { RequestHandler } from './$types';
 export const POST: RequestHandler = async ({ locals, cookies }) => {
 	const token = cookies.get('marilandense_auth_token');
 
-	if (!locals.currentUser || !token)
-		return json({ message: 'Usuário não encontrado' }, { status: 404 });
+	if (!locals.user || !token) return json({ message: 'Usuário não encontrado' }, { status: 404 });
 
 	deleteAuthCookies(cookies);
 
@@ -16,12 +15,11 @@ export const POST: RequestHandler = async ({ locals, cookies }) => {
 export const DELETE: RequestHandler = async ({ locals, cookies }) => {
 	const token = cookies.get('marilandense_auth_token');
 
-	if (!locals.currentUser || !token)
-		return json({ message: 'Usuário não encontrado' }, { status: 404 });
+	if (!locals.user || !token) return json({ message: 'Usuário não encontrado' }, { status: 404 });
 
 	const someShops = await prisma.shop.findMany({
 		where: {
-			userId: locals.currentUser.id
+			userId: locals.user.id
 		}
 	});
 
@@ -33,7 +31,7 @@ export const DELETE: RequestHandler = async ({ locals, cookies }) => {
 
 	await prisma.user.delete({
 		where: {
-			id: locals.currentUser.id
+			id: locals.user.id
 		}
 	});
 
