@@ -1,8 +1,7 @@
 import { dev } from '$app/environment';
 import { JWT_AUTH_KEY } from '$env/static/private';
 import type { Cookies } from '@sveltejs/kit';
-
-const { sign } = require('jsonwebtoken');
+import { sign } from 'jsonwebtoken';
 
 export function setAuthCookies(cookies: Cookies, userId: string) {
 	const token = sign({ id: userId }, JWT_AUTH_KEY, { expiresIn: '1d' });
