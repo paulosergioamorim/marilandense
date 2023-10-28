@@ -1,13 +1,8 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
+	import { createUserStore } from '$lib/stores';
 	import type { User } from '@prisma/client';
 
-	async function signOut() {
-		const res = await fetch('/logout', { method: 'post' });
-
-		if (res.ok) await goto('/', { invalidateAll: true });
-	}
+	const user = createUserStore();
 
 	interface $$Slots {
 		default: {
@@ -17,6 +12,6 @@
 	}
 </script>
 
-{#if $page.data.user}
-	<slot user={$page.data.user} {signOut} />
+{#if $user}
+	<slot user={$user} signOut={user.signOut} />
 {/if}

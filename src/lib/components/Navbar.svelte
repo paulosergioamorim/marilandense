@@ -25,7 +25,7 @@
 			Função: {rolesMap.get(user.role)}
 		</p>
 		<div class="button-group">
-			<a href="/register?update" on:click={hideModal} class="button blue">Atualizar</a>
+			<a href="/register" on:click={hideModal} class="button blue">Atualizar</a>
 		</div>
 	</Modal>
 </SignedIn>

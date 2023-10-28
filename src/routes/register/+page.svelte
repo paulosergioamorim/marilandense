@@ -1,17 +1,11 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
-	import { goto, invalidateAll } from '$app/navigation';
-	import { page } from '$app/stores';
-	import { delay, rolesMap } from '$lib';
-	import { onMount } from 'svelte';
+	import { invalidateAll } from '$app/navigation';
+	import { createUserStore, delay, rolesMap } from '$lib';
 	import type { ActionData, SubmitFunction } from './$types';
+	import { UserRole } from '@prisma/client';
 
-	$: user = $page.data.user;
-	$: update = $page.url.searchParams.has('update');
-
-	onMount(async () => {
-		if (update && !user) await goto('/register');
-	});
+	const user = createUserStore();
 
 	const registerSubmit: SubmitFunction = async () => {
 		return async ({ result }) => {
@@ -27,27 +21,27 @@
 </script>
 
 <svelte:head>
-	<title>Marilandense | {update ? 'Atualizar' : 'Cadastrar'}</title>
+	<title>Marilandense | {$user ? 'Atualizar' : 'Cadastrar'}</title>
 </svelte:head>
 
 <section class="container">
-	<h2>{update ? 'Atualizar' : 'Cadastrar'}</h2>
+	<h2>{$user ? 'Atualizar' : 'Cadastrar'}</h2>
 	<form method="post" class="row g-3" use:enhance={registerSubmit}>
 		<div class="col-6">
 			<label for="email">Email</label>
-			<input type="text" name="email" id="email" class="form-control" value={user?.email ?? ''} />
+			<input type="text" name="email" id="email" class="form-control" value={$user?.email ?? ''} />
 		</div>
 		<div class="col-6">
 			<label for="name">Nome</label>
-			<input type="text" name="name" id="name" class="form-control" value={user?.name ?? ''} />
+			<input type="text" name="name" id="name" class="form-control" value={$user?.name ?? ''} />
 		</div>
 		<div class="col-6">
 			<label for="phone">Telefone</label>
-			<input type="tel" name="phone" id="phone" class="form-control" value={user?.phone ?? ''} />
+			<input type="tel" name="phone" id="phone" class="form-control" value={$user?.phone ?? ''} />
 		</div>
 		<div class="col-6">
 			<label for="role">Função</label>
-			<select name="role" id="role" class="form-control" value={user?.role}>
+			<select name="role" id="role" class="form-control" value={$user?.role ?? UserRole.CUSTOMER}>
 				{#each rolesMap as [key, name]}
 					<option value={key} disabled={key === 'ADMIN'}>{name}</option>
 				{/each}
@@ -60,9 +54,16 @@
 				name="address"
 				id="address"
 				class="form-control"
-				value={user?.address ?? ''}
+				value={$user?.address ?? ''}
 			/>
 		</div>
+		{#if $user}
+			<div class="col-12">
+				<div class="alert alert-danger">
+					Caso não queira atualizar sua senha, deixe os próximos dois campos em branco!
+				</div>
+			</div>
+		{/if}
 		<div class="col-6">
 			<label for="password">Senha</label>
 			<input type="password" name="password" id="password" class="form-control" />
