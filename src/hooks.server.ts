@@ -1,7 +1,9 @@
 import { JWT_AUTH_KEY } from '$env/static/private';
 import { prisma } from '$lib/server';
 import type { Handle } from '@sveltejs/kit';
-import { verify, type JwtPayload } from 'jsonwebtoken';
+import type { JwtPayload } from 'jsonwebtoken';
+
+const { verify } = require('jsonwebtoken');
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const token = event.cookies.get('marilandense_auth_token');
