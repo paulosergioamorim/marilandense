@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { fmt, statusMap, tooltip } from '$lib';
-	import { IsNotOwner, TagTile } from '.';
+	import { fmt, tooltip } from '$lib';
+	import { IsNotOwner, TagTile, StatusTile } from '.';
 	import type { Order, Product, Tag } from '@prisma/client';
 
 	export let order: Order & { product: Product & { tag: Tag } };
@@ -17,7 +17,7 @@
 		</p>
 		<div class="tag-group">
 			<TagTile tag={order.product.tag} />
-			<span class="tag">{statusMap.order.get(order.status)}</span>
+			<StatusTile status={order.status} />
 		</div>
 		<IsNotOwner>
 			<div class="button-group">

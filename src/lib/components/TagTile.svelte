@@ -7,7 +7,7 @@
 <span class="tag">#{tag.title}</span>
 
 <style>
-	:global(.tag) {
+	.tag {
 		display: flex;
 		width: fit-content;
 		padding: 0 8px;

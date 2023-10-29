@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { statusMap } from '$lib';
+	import { shopStatusMap } from '$lib';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -105,7 +105,7 @@
 													<input
 														disabled
 														type="text"
-														value={statusMap.shop.get(shop.status)}
+														value={shopStatusMap.get(shop.status)}
 														class="form-control"
 													/>
 												</div>
@@ -113,7 +113,7 @@
 													<div class="row">
 														<div class="col">
 															<select name="status" id="status" class="form-control">
-																{#each statusMap.shop as [key, status]}
+																{#each shopStatusMap as [key, status]}
 																	<option value={key}>{status}</option>
 																{/each}
 															</select>
