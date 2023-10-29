@@ -2,10 +2,10 @@ import { goto } from '$app/navigation';
 import { page } from '$app/stores';
 import { derived, writable } from 'svelte/store';
 
-export type CreateModalStoreType = ReturnType<typeof createModalStore>;
+export type ModalStoreType = ReturnType<typeof createModalStore>;
 
 export function createModalStore() {
-	const { set, subscribe, update } = writable(false);
+	const { set, subscribe } = writable(false);
 
 	function showModal() {
 		set(true);
@@ -15,15 +15,10 @@ export function createModalStore() {
 		set(false);
 	}
 
-	function toggleModal() {
-		update((show) => !show);
-	}
-
 	return {
 		subscribe,
 		showModal,
-		hideModal,
-		toggleModal
+		hideModal
 	};
 }
 

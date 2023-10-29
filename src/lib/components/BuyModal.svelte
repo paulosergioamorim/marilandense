@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { goto, invalidate } from '$app/navigation';
-	import type { CreateModalStoreType } from '$lib/stores';
+	import type { ModalStoreType } from '$lib/stores';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import Modal from './Modal.svelte';
 	import type Prisma from '@prisma/client';
@@ -15,7 +15,7 @@
 	};
 
 	export let product: Prisma.Product | null;
-	export let modalStore: CreateModalStoreType;
+	export let modalStore: ModalStoreType;
 </script>
 
 <Modal {modalStore}>

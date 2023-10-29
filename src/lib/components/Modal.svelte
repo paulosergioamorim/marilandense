@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { CreateModalStoreType } from '$lib/stores';
+	import type { ModalStoreType } from '$lib/stores';
 	import { delay } from '$lib';
 
 	let el: HTMLDialogElement | null = null;
@@ -12,7 +12,7 @@
 		delay(500).then(() => el?.close());
 	}
 
-	export let modalStore: CreateModalStoreType;
+	export let modalStore: ModalStoreType;
 </script>
 
 <dialog bind:this={el} class="marilandense-modal hide">
