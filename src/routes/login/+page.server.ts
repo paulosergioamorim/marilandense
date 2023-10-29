@@ -1,7 +1,7 @@
-import { fail } from '@sveltejs/kit';
 import type { Actions } from './$types';
+import { fail } from '@sveltejs/kit';
 import { prisma, setAuthCookies } from '$lib/server';
-import { compare } from 'bcryptjs';
+import bycryptjs from 'bcryptjs';
 
 export const actions: Actions = {
 	async default({ cookies, request }) {
@@ -17,7 +17,7 @@ export const actions: Actions = {
 
 		if (!user) return fail(404, { success: false, message: 'Usuário não encontrado.' });
 
-		const passwordMatches = await compare(password, user.passwordHash);
+		const passwordMatches = await bycryptjs.compare(password, user.passwordHash);
 
 		if (!passwordMatches) return fail(404, { success: false, message: 'Senha inválida.' });
 

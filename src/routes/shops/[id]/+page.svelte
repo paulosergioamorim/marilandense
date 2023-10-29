@@ -2,9 +2,8 @@
 	import type { PageData } from './$types';
 	import { setContext } from 'svelte';
 	import { tooltip, createModalStore } from '$lib';
-	import { BuyModal, IsNotOwner, IsOwner, ProductCard } from '$lib/components';
+	import { BuyModal, IsNotOwner, IsOwner, ProductCard, OrderCard } from '$lib/components';
 	import type { Product } from '@prisma/client';
-	import OrderCard from '$lib/components/OrderCard.svelte';
 
 	let product: Product | null = null;
 

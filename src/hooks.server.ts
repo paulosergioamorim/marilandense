@@ -1,7 +1,7 @@
+import type { Handle } from '@sveltejs/kit';
 import { JWT_AUTH_KEY } from '$env/static/private';
 import { prisma } from '$lib/server';
-import type { Handle } from '@sveltejs/kit';
-import { verify, type JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const token = event.cookies.get('marilandense_auth_token');
@@ -11,7 +11,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		return resolve(event);
 	}
 
-	const payload = verify(token, JWT_AUTH_KEY) as JwtPayload;
+	const payload = jwt.verify(token, JWT_AUTH_KEY) as jwt.JwtPayload;
 	const currentUser = await prisma.user.findFirst({
 		where: {
 			id: payload.id

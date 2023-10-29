@@ -1,10 +1,10 @@
 import { dev } from '$app/environment';
 import { JWT_AUTH_KEY } from '$env/static/private';
 import type { Cookies } from '@sveltejs/kit';
-import { sign } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 export function setAuthCookies(cookies: Cookies, userId: string) {
-	const token = sign({ id: userId }, JWT_AUTH_KEY, { expiresIn: '1d' });
+	const token = jwt.sign({ id: userId }, JWT_AUTH_KEY, { expiresIn: '1d' });
 	const refreshToken = crypto.randomUUID();
 
 	cookies.set('marilandense_auth_token', token, {

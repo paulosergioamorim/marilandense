@@ -1,8 +1,8 @@
-import { fail } from '@sveltejs/kit';
 import type { Actions } from './$types';
-import { prisma, setAuthCookies } from '$lib/server';
-import { hash } from 'bcryptjs';
 import type { UserRole } from '@prisma/client';
+import { fail } from '@sveltejs/kit';
+import { prisma, setAuthCookies } from '$lib/server';
+import bycryptjs from 'bcryptjs';
 
 export const actions: Actions = {
 	async default({ locals, cookies, request }) {
@@ -35,7 +35,7 @@ export const actions: Actions = {
 		if (password && password !== confirmPassword)
 			return fail(404, { success: false, message: 'Senhas não coincidem.' });
 
-		let passwordHash = user?.passwordHash ?? (await hash(password, 10));
+		let passwordHash = user?.passwordHash ?? (await bycryptjs.hash(password, 10));
 
 		user = await prisma.user.upsert({
 			create: {
