@@ -17,7 +17,7 @@ npm i
 # adicione as variáveis de ambiente (num arquivo .env)
 
 DATABASE_URL='my-database-url'
-JWT_PRIVATE_KEY='my-jwt-private-key'
+JWT_AUTH_KEY='my-jwt-auth-key'
 
 # executar o projeto
 
