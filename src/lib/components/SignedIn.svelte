@@ -2,14 +2,14 @@
 	import { createUserStore } from '$lib/stores';
 	import type { User } from '@prisma/client';
 
-	const user = createUserStore();
-
 	interface $$Slots {
 		default: {
 			user: User;
 			signOut(): Promise<void>;
 		};
 	}
+
+	const user = createUserStore();
 </script>
 
 {#if $user}
