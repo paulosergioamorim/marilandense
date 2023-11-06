@@ -4,6 +4,7 @@
 	import { tooltip, createModalStore } from '$lib';
 	import { BuyModal, IsNotOwner, IsOwner, ProductCard, OrderCard } from '$lib/components';
 	import type { Product } from '@prisma/client';
+	import StatusTile from '$lib/components/StatusTile.svelte';
 
 	let product: Product | null = null;
 
@@ -50,9 +51,10 @@
 			{/each}
 		</div>
 	</section>
-</IsOwner>
 
-<IsOwner>
+	<div id="status">
+		<StatusTile status={data.shop.status} />
+	</div>
 	<div class="button-group">
 		<a
 			use:tooltip={{ text: 'Adicionar produto' }}
@@ -72,6 +74,12 @@
 </IsOwner>
 
 <style>
+	#status {
+		position: fixed;
+		bottom: 1rem;
+		left: 1rem;
+	}
+
 	.button-group {
 		position: fixed;
 		bottom: 1rem;

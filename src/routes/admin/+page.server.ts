@@ -21,11 +21,15 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const title = formData.get('tag') as string;
 
+		if (title === '') return { success: false, message: 'Preencha o nome da categoria.' };
+
 		await prisma.tag.create({
 			data: {
 				title
 			}
 		});
+
+		return { success: true, message: 'Sucesso ao criar categoria.' };
 	},
 	async removeTag({ request }) {
 		const formData = await request.formData();

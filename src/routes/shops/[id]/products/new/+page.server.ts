@@ -1,8 +1,8 @@
 import { prisma } from '$lib/server';
 import { error, fail } from '@sveltejs/kit';
-import type { Actions, PageServerLoad } from './$types';
+import { lstat, mkdir } from 'fs/promises';
 import sharp from 'sharp';
-import type { Product } from '@prisma/client';
+import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params, url }) => {
 	const id = Number(params.id);
@@ -48,40 +48,37 @@ export const actions: Actions = {
 		const photo = formData.get('photo') as File;
 		const shopId = Number(params.id);
 		const updateId = Number(url.searchParams.get('update'));
-
-		let product: Product;
-
-		if (updateId)
-			product = await prisma.product.update({
-				data: {
-					name,
-					description,
-					price,
-					avaliable,
-					shopId,
-					tagId
-				},
-				where: {
-					id: updateId
-				}
-			});
-		else
-			product = await prisma.product.create({
-				data: {
-					name,
-					description,
-					price,
-					avaliable,
-					shopId,
-					tagId
-				}
-			});
+		const product = await prisma.product.upsert({
+			create: {
+				name,
+				description,
+				price,
+				avaliable,
+				tagId,
+				shopId
+			},
+			update: {
+				name,
+				description,
+				price,
+				avaliable,
+				tagId,
+				shopId
+			},
+			where: {
+				id: updateId
+			}
+		});
 
 		if (photo.size === 0) return { success: true, message: 'Sucesso ao cadastrar produto' };
 
 		try {
 			const fileName = `${product.id}.jpg`;
 			const imageUrl = `./static/products/${fileName}`;
+
+			const dirStats = await lstat('./static/products');
+
+			if (!dirStats.isDirectory()) mkdir('./static/products');
 
 			await sharp(await photo.arrayBuffer())
 				.resize({ width: 256, height: 256 })
