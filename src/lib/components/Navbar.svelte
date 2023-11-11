@@ -73,8 +73,8 @@
 					<button on:click={signOut} class="button salmon" type="submit">Sair</button>
 				</SignedIn>
 				<SignedOut>
-					<a class="button green" href="/login">Entrar</a>
-					<a class="button salmon" href="/register">Registrar</a>
+					<a class="button green" href="/sign-in">Entrar</a>
+					<a class="button salmon" href="/sign-up">Registrar</a>
 				</SignedOut>
 			</div>
 		</div>

@@ -10,12 +10,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 		event.locals.user = null;
 	} else {
 		const payload = jwt.verify(token, JWT_AUTH_KEY) as jwt.JwtPayload;
-		const currentUser = await prisma.user.findFirst({
+		const user = await prisma.user.findFirst({
 			where: {
 				id: payload.id
 			}
 		});
-		event.locals.user = currentUser;
+		event.locals.user = user;
 	}
 
 	if (event.url.pathname === '/admin' && event.locals.user?.role !== 'ADMIN')
