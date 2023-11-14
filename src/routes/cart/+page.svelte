@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { OrderCard } from '$lib/components';
 	import type { PageData } from './$types';
+	import OrderCard from './OrderCard.svelte';
 
 	export let data: PageData;
 </script>

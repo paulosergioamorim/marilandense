@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { tooltip } from '$lib';
-	import { ShopCard, SignedIn } from '$lib/components';
+	import { SignedIn } from '$lib/components';
 	import type { PageData } from './$types';
+	import ShopCard from './ShopCard.svelte';
 
 	export let data: PageData;
 </script>
