@@ -1,17 +1,6 @@
 <script lang="ts">
-	import { BuyModal, ProductCard } from '$lib/components';
-	import { createModalStore } from '$lib/stores';
+	import { ProductCard } from '$lib/components';
 	import type { PageData } from './$types';
-	import type { Product } from '@prisma/client';
-
-	let product: Product | null = null;
-
-	function buyProductHandle(e: CustomEvent) {
-		product = e.detail.product;
-		if (product) modalStore.showModal();
-	}
-
-	const modalStore = createModalStore();
 
 	export let data: PageData;
 
@@ -22,8 +11,6 @@
 <svelte:head>
 	<title>Marilandense | Produtos</title>
 </svelte:head>
-
-<BuyModal {modalStore} {product} />
 
 <section class="container">
 	<h2 class="text-center">Produtos</h2>
@@ -50,7 +37,7 @@
 	</div>
 	<div class="flex-wrapper">
 		{#each data.products as product}
-			<ProductCard on:buy={buyProductHandle} {product} />
+			<ProductCard {product} />
 		{/each}
 	</div>
 </section>

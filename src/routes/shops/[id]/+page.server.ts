@@ -1,4 +1,4 @@
-import { prisma, buyProductAction } from '$lib/server';
+import { prisma } from '$lib/server';
 import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { rm } from 'fs/promises';
@@ -51,7 +51,6 @@ export const load: PageServerLoad = async ({ locals, params, depends }) => {
 };
 
 export const actions: Actions = {
-	buyProduct: buyProductAction,
 	async deleteProduct({ request }) {
 		const formData = await request.formData();
 		const id = Number(formData.get('id'));

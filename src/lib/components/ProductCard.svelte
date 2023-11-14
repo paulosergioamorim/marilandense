@@ -1,126 +1,82 @@
 <script lang="ts">
 	import type { Product, Tag } from '@prisma/client';
-	import { createEventDispatcher } from 'svelte';
 	import { enhance } from '$app/forms';
-	import { invalidate } from '$app/navigation';
+	import { goto } from '$app/navigation';
 	import { fmt, tooltip } from '$lib';
-	import type { SubmitFunction } from '@sveltejs/kit';
-	import { IsOwner, SignedIn, TagTile } from '.';
+	import { SignedIn } from '.';
 
-	const dispatch = createEventDispatcher();
-
-	function buyClick() {
-		dispatch('buy', { product });
+	enum ProductState {
+		VIEWING,
+		BUYING
 	}
 
-	const deleteProductSubmit: SubmitFunction = ({ cancel }) => {
-		if (!confirm('Tem certeza que deseja excluir esse produto?')) return cancel();
-		return async () => await invalidate('products');
-	};
+	let state = ProductState.VIEWING;
 
 	export let product: Product & { tag: Tag };
 </script>
 
-<div class="product-card">
-	<span class="product-avaliable">{product.avaliable}</span>
-	<img src={product.imageUrl} alt={product.name} class="product-image" />
-	<div class="product-body">
-		<h5 class="product-name">{product.name}</h5>
-		<p class="product-description">{product.description}</p>
-		<div class="product-price">{fmt.format(product.price)}</div>
-		<div class="tag-group">
-			<TagTile tag={product.tag} />
+<div class="card p-3 border-5 rounded-5" style="max-width: 540px;">
+	<div class="row g-0">
+		<div class="col-md-4">
+			<img src={product.imageUrl} alt={product.name} class="img-fluid rounded-start" />
 		</div>
-		<div class="button-group">
-			<SignedIn>
-				{#if product.avaliable > 0}
-					<button
-						use:tooltip={{ text: 'Adicionar ao carrinho' }}
-						on:click={buyClick}
-						class="button green"><i class="fa fa-cart-shopping" /></button
-					>
-				{/if}
-			</SignedIn>
-			<IsOwner>
-				<a
-					href="/shops/{product.shopId}/products/new?update={product.id}"
-					use:tooltip={{ text: 'Editar produto' }}
-					class="button blue"
-				>
-					<i class="fa fa-edit" />
-				</a>
-				<form
-					action="?/deleteProduct"
-					method="post"
-					class="d-inline"
-					use:enhance={deleteProductSubmit}
-				>
-					<input type="hidden" name="id" value={product.id} />
-					<button
-						use:tooltip={{ text: 'Excluir produto' }}
-						formaction="?/deleteProduct"
-						type="submit"
-						class="button salmon"><i class="fa fa-trash" /></button
-					>
-				</form>
-			</IsOwner>
+		<div class="col-md-8">
+			<div class="card-body">
+				<h5 class="card-title fw-bold">{product.name}</h5>
+				<p class="card-text">{product.description}</p>
+				<p class="card-text">
+					{fmt.format(product.price)}
+					<br />
+				</p>
+				<div class="tag-group">
+					<span class="tag">#{product.tag.title}</span>
+				</div>
+				<SignedIn>
+					<div>
+						{#if state === ProductState.BUYING}
+							<form
+								action="/shops/{product.shopId}/buy"
+								method="post"
+								class="row g-3"
+								use:enhance={() => async () => await goto('/cart')}
+							>
+								<input type="hidden" name="id" value={product.id} />
+								<div class="col-6">
+									<input
+										type="number"
+										name="amount"
+										id="amount"
+										class="form-control"
+										min="1"
+										max={product.avaliable}
+										value="1"
+									/>
+								</div>
+								<div class="col-4">
+									<button type="submit" class="button green" use:tooltip={{ text: 'Confirmar' }}>
+										<i class="fa fa-cart-shopping" />
+									</button>
+									<button
+										class="button salmon"
+										on:click={() => (state = ProductState.VIEWING)}
+										use:tooltip={{ text: 'Cancelar' }}
+									>
+										<i class="fa fa-cancel" />
+									</button>
+								</div>
+							</form>
+						{:else}
+							<button
+								class="button green"
+								on:click={() => (state = ProductState.BUYING)}
+								use:tooltip={{ text: 'Adicionar ao carrinho' }}
+							>
+								<i class="fa fa-cart-shopping" />
+							</button>
+						{/if}
+					</div>
+				</SignedIn>
+			</div>
 		</div>
 	</div>
 </div>
-
-<style>
-	.product-card {
-		display: flex;
-		flex-direction: column;
-		border: 4px var(--gray) solid;
-		border-radius: 24px;
-		overflow: visible;
-		position: relative;
-		width: 250px;
-		height: 500px;
-	}
-
-	@media screen and (width <= 578px) {
-		.product-card {
-			width: calc(100% - 1rem);
-		}
-	}
-
-	.product-image {
-		border-radius: 20px 20px 0 0;
-	}
-
-	.product-body {
-		display: flex;
-		flex-direction: column;
-		padding: 12px;
-		height: 100%;
-	}
-
-	.product-description {
-		font-size: 0.8rem;
-	}
-
-	.product-name {
-		font-size: 20px;
-		font-weight: 600;
-	}
-
-	.product-avaliable {
-		background-color: #000;
-		position: absolute;
-		top: -0.75rem;
-		right: -0.75rem;
-		color: white;
-		width: 30px;
-		height: 30px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		border-radius: 50%;
-	}
-
-	.button-group {
-		margin-top: auto;
-	}
-</style>

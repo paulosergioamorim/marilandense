@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { fmt, tooltip } from '$lib';
-	import { IsNotOwner, TagTile, StatusTile } from '.';
 	import type { Order, Product, Tag } from '@prisma/client';
-
 	export let order: Order & { product: Product & { tag: Tag } };
 </script>
 
@@ -16,50 +14,48 @@
 			{fmt.format(order.product.price * order.amount)} <br />
 		</p>
 		<div class="tag-group">
-			<TagTile tag={order.product.tag} />
-			<StatusTile status={order.status} />
+			<span class="tag">#{order.product.tag.title}</span>
+			<span class="tag">{order.status}</span>
 		</div>
-		<IsNotOwner>
-			<div class="button-group">
-				<form method="post" use:enhance>
-					<input type="hidden" name="id" value={order.id} />
-					{#if order.status === 'PENDING'}
-						<button
-							disabled={order.amount === 1}
-							formaction="?/decreaseAmount"
-							type="submit"
-							class="button salmon"
-						>
-							<i class="fa fa-minus" />
-						</button>
-						<button
-							disabled={order.amount === order.product.avaliable}
-							formaction="?/increaseAmount"
-							type="submit"
-							class="button blue"
-						>
-							<i class="fa fa-plus" />
-						</button>
-						<button
-							formaction="?/confirmOrder"
-							type="submit"
-							class="button green"
-							use:tooltip={{ text: 'Confirmar' }}
-						>
-							<i class="fa fa-shopping-bag" />
-						</button>
-					{/if}
+		<div class="button-group">
+			<form method="post" use:enhance>
+				<input type="hidden" name="id" value={order.id} />
+				{#if order.status === 'PENDING'}
 					<button
-						formaction="?/deleteOrder"
+						disabled={order.amount === 1}
+						formaction="?/decreaseAmount"
 						type="submit"
 						class="button salmon"
-						use:tooltip={{ text: 'Excluir' }}
 					>
-						<i class="fa fa-trash" />
+						<i class="fa fa-minus" />
 					</button>
-				</form>
-			</div>
-		</IsNotOwner>
+					<button
+						disabled={order.amount === order.product.avaliable}
+						formaction="?/increaseAmount"
+						type="submit"
+						class="button blue"
+					>
+						<i class="fa fa-plus" />
+					</button>
+					<button
+						formaction="?/confirmOrder"
+						type="submit"
+						class="button green"
+						use:tooltip={{ text: 'Confirmar' }}
+					>
+						<i class="fa fa-shopping-bag" />
+					</button>
+				{/if}
+				<button
+					formaction="?/deleteOrder"
+					type="submit"
+					class="button salmon"
+					use:tooltip={{ text: 'Excluir' }}
+				>
+					<i class="fa fa-trash" />
+				</button>
+			</form>
+		</div>
 	</div>
 </div>
 

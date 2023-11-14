@@ -1,4 +1,4 @@
-import { error, type Handle } from '@sveltejs/kit';
+import { error, redirect, type Handle } from '@sveltejs/kit';
 import { JWT_AUTH_KEY } from '$env/static/private';
 import { prisma } from '$lib/server';
 import jwt from 'jsonwebtoken';
@@ -20,6 +20,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	if (event.url.pathname === '/admin' && event.locals.user?.role !== 'ADMIN')
 		throw error(403, { message: 'Você não pode acessar essa página!' });
+
+	if (event.url.pathname === '/my' && !event.locals.user) throw redirect(303, '/sign-in');
 
 	return resolve(event);
 };

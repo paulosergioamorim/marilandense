@@ -108,7 +108,8 @@
 </section>
 
 <style>
-	#tags, #shops {
+	#tags,
+	#shops {
 		scroll-margin-top: 70px;
 		margin-top: 20px;
 		min-height: 100vh;

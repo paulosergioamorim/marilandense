@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Shop, Tag } from '@prisma/client';
-	import TagTile from './TagTile.svelte';
 	import { page } from '$app/stores';
 
 	export let shop: Shop & { tags: Tag[] };
@@ -14,7 +13,7 @@
 	</p>
 	<div class="tag-group">
 		{#each shop.tags as tag}
-			<TagTile {tag} />
+			<span class="tag">#{tag.title}</span>
 		{/each}
 	</div>
 	<br />
