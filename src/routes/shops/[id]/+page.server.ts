@@ -49,27 +49,3 @@ export const load: PageServerLoad = async ({ locals, params, depends }) => {
 
 	return { shop, orders };
 };
-
-export const actions: Actions = {
-	async deleteProduct({ request }) {
-		const formData = await request.formData();
-		const id = Number(formData.get('id'));
-
-		try {
-			const product = await prisma.product.delete({
-				where: {
-					id
-				}
-			});
-
-			await rm(`./static${product.imageUrl}`);
-		} catch (error) {
-			console.error(error);
-			return fail(500, { success: false, message: 'Erro ao excluir produto.' });
-		}
-
-		return {
-			success: true
-		};
-	}
-};

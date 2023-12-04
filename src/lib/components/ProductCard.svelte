@@ -15,7 +15,7 @@
 	export let product: Product & { tag: Tag };
 </script>
 
-<div class="card p-3 border-5 rounded-5" style="max-width: 540px;">
+<div class="card p-2 border-5 rounded-5" style="max-width: 540px;">
 	<div class="row g-0">
 		<div class="col-md-4">
 			<img src={product.imageUrl} alt={product.name} class="img-fluid rounded-start" />

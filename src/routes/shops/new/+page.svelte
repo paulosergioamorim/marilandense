@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
+	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { delay } from '$lib';
 	import type { ActionData, PageData, SubmitFunction } from './$types';
@@ -11,7 +12,7 @@
 			await applyAction(result);
 			if (result.type !== 'success') return;
 			await delay(500);
-			history.back();
+			await goto('/my');
 		};
 	};
 

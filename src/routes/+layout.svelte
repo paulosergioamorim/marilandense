@@ -9,6 +9,7 @@
 <header>
 	<Navbar />
 </header>
+
 <main>
 	<slot />
 </main>

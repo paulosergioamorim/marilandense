@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
-	import { invalidate } from '$app/navigation';
+	import { goto, invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { delay } from '$lib';
 	import type { PageData, ActionData, SubmitFunction } from './$types';
@@ -13,7 +13,7 @@
 			if (result.type !== 'success') return;
 			await delay(500);
 			await invalidate('products');
-			history.back();
+			await goto('/my/' + $page.params.id);
 		};
 	};
 

@@ -1,18 +1,17 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
+	import { goto } from '$app/navigation';
 	import { delay } from '$lib';
 	import type { ActionData, SubmitFunction } from './$types';
 
-	const loginSubmit: SubmitFunction = async () => {
-		return async ({ result }) => {
+	const loginSubmit: SubmitFunction =
+		() =>
+		async ({ result }) => {
 			await applyAction(result);
 			if (result.type !== 'success') return;
 			await delay(500);
-			await invalidateAll();
-			history.back();
+			await goto('/', { invalidateAll: true });
 		};
-	};
 
 	export let form: ActionData;
 </script>

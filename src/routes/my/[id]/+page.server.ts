@@ -1,6 +1,7 @@
-import { error } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import { error, fail } from '@sveltejs/kit';
+import type { Actions, PageServerLoad } from './$types';
 import { prisma } from '$lib/server';
+import { rm } from 'fs/promises';
 
 export const load: PageServerLoad = async ({ params, depends }) => {
 	depends('products');
@@ -34,4 +35,28 @@ export const load: PageServerLoad = async ({ params, depends }) => {
 	if (!shop) throw error(404, 'Loja não encontrada');
 
 	return { shop };
+};
+
+export const actions: Actions = {
+	async deleteProduct({ request }) {
+		const formData = await request.formData();
+		const id = Number(formData.get('id'));
+
+		try {
+			const product = await prisma.product.delete({
+				where: {
+					id
+				}
+			});
+
+			await rm(`./static${product.imageUrl}`);
+		} catch (error) {
+			console.error(error);
+			return fail(500, { success: false, message: 'Erro ao excluir produto.' });
+		}
+
+		return {
+			success: true
+		};
+	}
 };

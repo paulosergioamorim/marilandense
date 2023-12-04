@@ -1,21 +1,20 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
+	import { goto } from '$app/navigation';
 	import { createUserStore, delay, rolesMap } from '$lib';
 	import type { ActionData, SubmitFunction } from './$types';
 	import { UserRole } from '@prisma/client';
 
 	const user = createUserStore();
 
-	const registerSubmit: SubmitFunction = async () => {
-		return async ({ result }) => {
+	const registerSubmit: SubmitFunction =
+		() =>
+		async ({ result }) => {
 			await applyAction(result);
 			if (result.type !== 'success') return;
 			await delay(500);
-			await invalidateAll();
-			history.back();
+			await goto('/', { invalidateAll: true });
 		};
-	};
 
 	export let form: ActionData;
 </script>

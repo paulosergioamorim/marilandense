@@ -1,6 +1,8 @@
 <script>
-	import { ProductCard, OrderCard } from '$lib/components';
-	import { shopStatusMap, tooltip } from '$lib';
+	import { enhance } from '$app/forms';
+	import { fmt, shopStatusMap, tooltip } from '$lib';
+	import OrderCard from './OrderCard.svelte';
+	import ProductCard from './ProductCard.svelte';
 
 	export let data;
 </script>
@@ -34,7 +36,7 @@
 <div class="button-group">
 	<a
 		use:tooltip={{ text: 'Adicionar produto' }}
-		href="/shops/{data.shop.id}/products/new"
+		href="/my/{data.shop.id}/products/new"
 		class="button blue"
 	>
 		<i class="fa fa-add" />

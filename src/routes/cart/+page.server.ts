@@ -3,7 +3,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	if (!locals.user) throw redirect(301, '/login');
+	if (!locals.user) throw redirect(301, '/sing-in');
 
 	const orders = await prisma.order.findMany({
 		where: {
@@ -80,13 +80,16 @@ export const actions: Actions = {
 			}
 		});
 	},
-	async deleteOrder({ locals, request }) {
+	async cancelOrder({ locals, request }) {
 		const formData = await request.formData();
 		const id = Number(formData.get('id'));
 
 		if (!locals.user) return fail(403, { success: false, message: 'Não autorizado' });
 
-		const order = await prisma.order.delete({
+		const order = await prisma.order.update({
+			data: {
+				status: 'CANCELED'
+			},
 			where: {
 				id
 			}
@@ -102,6 +105,18 @@ export const actions: Actions = {
 			},
 			where: {
 				id: order.productId
+			}
+		});
+	},
+	async deleteOrder({ locals, request }) {
+		const formData = await request.formData();
+		const id = Number(formData.get('id'));
+
+		if (!locals.user) return fail(403, { success: false, message: 'Não autorizado' });
+
+		await prisma.order.delete({
+			where: {
+				id
 			}
 		});
 	},

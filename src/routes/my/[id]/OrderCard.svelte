@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { fmt, orderStatusMap, tooltip } from '$lib';
 	import type { Order, Product, Tag } from '@prisma/client';
-
+	
 	export let order: Order & { product: Product & { tag: Tag } };
 </script>
 
@@ -47,16 +47,14 @@
 						<i class="fa fa-shopping-bag" />
 					</button>
 				{/if}
-				{#if order.status !== 'CANCELED'}
-					<button
-						formaction="?/{order.status === 'PENDING' ? 'deleteOrder' : 'cancelOrder'}"
-						type="submit"
-						class="button salmon"
-						use:tooltip={{ text: 'Cancelar' }}
-					>
-						<i class="fa fa-cancel" />
-					</button>
-				{/if}
+				<button
+					formaction="?/deleteOrder"
+					type="submit"
+					class="button salmon"
+					use:tooltip={{ text: 'Excluir' }}
+				>
+					<i class="fa fa-trash" />
+				</button>
 			</form>
 		</div>
 	</div>
