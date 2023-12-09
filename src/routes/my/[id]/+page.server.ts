@@ -2,6 +2,7 @@ import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { prisma } from '$lib/server';
 import { rm } from 'fs/promises';
+import type { $Enums } from '@prisma/client';
 
 export const load: PageServerLoad = async ({ params, depends }) => {
 	depends('products');
@@ -24,6 +25,9 @@ export const load: PageServerLoad = async ({ params, depends }) => {
 							status: {
 								not: 'PENDING'
 							}
+						},
+						include: {
+							buyer: true
 						}
 					}
 				}
@@ -58,5 +62,17 @@ export const actions: Actions = {
 		return {
 			success: true
 		};
+	},
+	async updateOrder({ request }) {
+		const formData = await request.formData();
+		const id = Number(formData.get('id'));
+		const status = formData.get('status') as $Enums.OrderStatus;
+
+		await prisma.order.update({
+			where: { id },
+			data: {
+				status
+			}
+		});
 	}
 };

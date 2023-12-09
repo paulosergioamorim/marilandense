@@ -15,10 +15,10 @@ export const shopStatusMap = new Map<ShopStatus, string>([
 ]);
 
 export const orderStatusMap = new Map<OrderStatus, string>([
-	['CONFIRMED', 'Confirmado'],
-	['APPROVED', 'Aprovada'],
+	['CONFIRMED', 'Confirmada'],
+	['APPROVED', 'Recebida'],
 	['CANCELED', 'Cancelada'],
-	['DELIVERED', 'Enviado'],
+	['DELIVERED', 'Enviada'],
 	['PENDING', 'Pendente'],
 	['SENT', 'Entregue']
 ]);

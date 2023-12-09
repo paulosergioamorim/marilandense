@@ -2,7 +2,6 @@
 node_modules
 /build
 /.svelte-kit
-/prisma/generated
 /package
 /static/products
 .env

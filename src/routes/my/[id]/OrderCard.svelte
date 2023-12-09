@@ -1,78 +1,57 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { fmt, orderStatusMap, tooltip } from '$lib';
-	import type { Order, Product, Tag } from '@prisma/client';
-	
-	export let order: Order & { product: Product & { tag: Tag } };
+	import type { Order, Product, Tag, User } from '@prisma/client';
+
+	export let order: Order & { buyer: User; product: Product & { tag: Tag } };
 </script>
 
-<div class="order">
-	<span class="order-amount">{order.amount}</span>
-	<img src={order.product.imageUrl} alt={order.product.name} class="order-image" />
+<div class="order-wrapper">
+	<span use:tooltip={{ text: 'Estoque' }} class="order-amount">{order.amount}</span>
+	<div class="img-wrapper">
+		<img src={order.product.imageUrl} alt={order.product.name} />
+	</div>
 	<div class="order-body">
-		<h5 class="order-name">{order.product.name}</h5>
+		<div class="order-name">{order.product.name}</div>
 		<p class="card-description">
 			{fmt.format(order.product.price * order.amount)} <br />
+			Comprador: {order.buyer.name} <br />
+			Endereço de Entrega: {order.buyer.address} <br />
+			Contato: {order.buyer.phone}
 		</p>
 		<div class="tag-group">
 			<span class="tag">#{order.product.tag.title}</span>
 			<span class="tag">{orderStatusMap.get(order.status)}</span>
 		</div>
-		<div class="button-group">
-			<form method="post" use:enhance>
-				<input type="hidden" name="id" value={order.id} />
-				{#if order.status === 'PENDING'}
-					<button
-						disabled={order.amount === 1}
-						formaction="?/decreaseAmount"
-						type="submit"
-						class="button salmon"
-					>
-						<i class="fa fa-minus" />
-					</button>
-					<button
-						disabled={order.amount === order.product.avaliable}
-						formaction="?/increaseAmount"
-						type="submit"
-						class="button blue"
-					>
-						<i class="fa fa-plus" />
-					</button>
-					<button
-						formaction="?/confirmOrder"
-						type="submit"
-						class="button green"
-						use:tooltip={{ text: 'Confirmar' }}
-					>
-						<i class="fa fa-shopping-bag" />
-					</button>
-				{/if}
-				<button
-					formaction="?/deleteOrder"
-					type="submit"
-					class="button salmon"
-					use:tooltip={{ text: 'Excluir' }}
-				>
-					<i class="fa fa-trash" />
-				</button>
-			</form>
-		</div>
+		<form method="post" action="?/updateOrder" class="row g-3" use:enhance>
+			<input type="hidden" name="id" value={order.id} />
+			<div class="col-7">
+				<select name="status" id="status" class="form-control">
+					{#each orderStatusMap as [key, name]}
+						{#if key !== 'PENDING' && key !== 'CANCELED'}
+							<option value={key}>{name}</option>
+						{/if}
+					{/each}
+				</select>
+			</div>
+			<div class="col">
+				<input type="submit" value="Atualizar" class="button green" />
+			</div>
+		</form>
 	</div>
 </div>
 
 <style>
-	.order {
+	.order-wrapper {
 		display: flex;
-		flex-direction: column;
 		border: 4px var(--gray) solid;
 		border-radius: 24px;
 		overflow: visible;
 		position: relative;
-		width: clamp(25%, 300px, 100% - 1rem);
 	}
 
-	.order-image {
-		border-radius: 20px 20px 0 0;
+	.img-wrapper img {
+		border-radius: 20px 0 0 20px;
 	}
 
 	.order-body {
@@ -82,7 +61,7 @@
 	}
 
 	.order-name {
-		font-size: 20px;
+		font-size: 24px;
 		font-weight: 600;
 	}
 
@@ -98,9 +77,5 @@
 		justify-content: center;
 		align-items: center;
 		border-radius: 50%;
-	}
-
-	.button-group {
-		margin-top: auto;
 	}
 </style>
