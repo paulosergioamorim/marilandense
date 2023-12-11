@@ -18,6 +18,7 @@ npm i
 
 DATABASE_URL='my-database-url'
 JWT_AUTH_KEY='my-jwt-auth-key'
+FILES_PATH='./static/products'
 
 # executar o projeto
 
