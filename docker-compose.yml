@@ -14,4 +14,3 @@ services:
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/marilandense
       JWT_SECRET_KEY: 7524G98DSAY21BBUI78SART78F1VERFHW8Y8FHSD8HF23H9F09HE90HF98
-      FILES_PATH: ./build/client/products

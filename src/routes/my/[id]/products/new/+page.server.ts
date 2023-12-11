@@ -3,7 +3,6 @@ import { error, fail } from '@sveltejs/kit';
 import { existsSync, mkdirSync } from 'fs';
 import sharp from 'sharp';
 import type { Actions, PageServerLoad } from './$types';
-import { env } from '$env/dynamic/private';
 
 export const load: PageServerLoad = async ({ locals, params, url }) => {
 	const id = Number(params.id);
@@ -75,9 +74,9 @@ export const actions: Actions = {
 
 		try {
 			const fileName = `${product.id}.jpg`;
-			const imageUrl = `${env.FILES_PATH}/${fileName}`;
+			const imageUrl = `./static/images/products/${fileName}`;
 
-			if (!existsSync(env.FILES_PATH)) mkdirSync(env.FILES_PATH, { recursive: true });
+			if (!existsSync('./static/images/products')) mkdirSync('./static/images/products', { recursive: true });
 
 			await sharp(await photo.arrayBuffer())
 				.resize({ width: 256, height: 256 })
@@ -86,7 +85,7 @@ export const actions: Actions = {
 
 			await prisma.product.update({
 				data: {
-					imageUrl: `/products/${fileName}`
+					imageUrl: `/images/products/${fileName}`
 				},
 				where: {
 					id: product.id
