@@ -5,11 +5,9 @@ WORKDIR /app
 RUN apt update -y
 RUN apt install -y openssl
 
-COPY package*.json .
-RUN npm i
-
 COPY . .
 
+RUN npm i
 RUN npm run build
 
 EXPOSE 3000

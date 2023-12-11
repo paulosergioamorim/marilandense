@@ -1,6 +1,6 @@
 import { error, redirect, type Handle } from '@sveltejs/kit';
-import { JWT_AUTH_KEY } from '$env/static/private';
-import { prisma } from '$lib/server';
+import { env } from '$env/dynamic/private';
+import { deleteAuthCookies, prisma } from '$lib/server';
 import jwt from 'jsonwebtoken';
 
 export const handle: Handle = async ({ event, resolve }) => {
@@ -9,13 +9,17 @@ export const handle: Handle = async ({ event, resolve }) => {
 	if (!token) {
 		event.locals.user = null;
 	} else {
-		const payload = jwt.verify(token, JWT_AUTH_KEY) as jwt.JwtPayload;
-		const user = await prisma.user.findFirst({
-			where: {
-				id: payload.id
-			}
-		});
-		event.locals.user = user;
+		try {
+			const payload = jwt.verify(token, env.JWT_SECRET_KEY) as jwt.JwtPayload;
+			const user = await prisma.user.findFirst({
+				where: {
+					id: payload.id
+				}
+			});
+			event.locals.user = user;
+		} catch (e) {
+			deleteAuthCookies(event.cookies);
+		}
 	}
 
 	if (event.url.pathname === '/admin' && event.locals.user?.role !== 'ADMIN')

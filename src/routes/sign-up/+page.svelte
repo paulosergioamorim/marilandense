@@ -3,7 +3,6 @@
 	import { goto } from '$app/navigation';
 	import { createUserStore, delay, rolesMap } from '$lib';
 	import type { ActionData, SubmitFunction } from './$types';
-	import { UserRole } from '@prisma/client';
 
 	const user = createUserStore();
 
@@ -40,9 +39,13 @@
 		</div>
 		<div class="col-6">
 			<label for="role">Função</label>
-			<select name="role" id="role" class="form-control" value={$user?.role ?? UserRole.CUSTOMER}>
+			<select name="role" id="role" class="form-control" value={$user?.role}>
 				{#each rolesMap as [key, name]}
-					<option value={key} disabled={key === 'ADMIN'}>{name}</option>
+					{#if key !== 'ADMIN'}
+						<option value={key} selected={$user ? $user.role === key : key === 'CUSTOMER'}
+							>{name}</option
+						>
+					{/if}
 				{/each}
 			</select>
 		</div>
