@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
   app:
-    build: marilandense
+    image: 50021072/marilandense
     ports:
       - 3000:3000
     environment:
