@@ -53,7 +53,7 @@ export const actions: Actions = {
 				}
 			});
 
-			await rm(`./static${product.imageUrl}`);
+			await rm(`./static/${product.imageUrl}`);
 		} catch (error) {
 			console.error(error);
 			return fail(500, { success: false, message: 'Erro ao excluir produto.' });

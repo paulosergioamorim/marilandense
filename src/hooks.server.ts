@@ -25,7 +25,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	if (event.url.pathname === '/admin' && event.locals.user?.role !== 'ADMIN')
 		throw error(403, { message: 'Você não pode acessar essa página!' });
 
-	if (event.url.pathname === '/my' && !event.locals.user) throw redirect(303, '/sign-in');
+	if (['/my', '/cart'].includes(event.url.pathname) && !event.locals.user) throw redirect(303, '/sign-in');
 
 	return resolve(event);
 };

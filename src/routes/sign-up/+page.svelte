@@ -39,10 +39,10 @@
 		</div>
 		<div class="col-6">
 			<label for="role">Função</label>
-			<select name="role" id="role" class="form-control" value={$user?.role}>
+			<select name="role" id="role" class="form-control" value={$user?.role ?? 'CUSTOMER'}>
 				{#each rolesMap as [key, name]}
 					{#if key !== 'ADMIN'}
-						<option value={key} selected={$user ? $user.role === key : key === 'CUSTOMER'}
+						<option value={key}
 							>{name}</option
 						>
 					{/if}

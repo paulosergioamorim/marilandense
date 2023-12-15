@@ -6,14 +6,14 @@
 	export let order: Order & { product: Product & { tag: Tag } };
 </script>
 
-<div class="order">
-	<span class="order-amount">{order.amount}</span>
-	<img src={order.product.imageUrl} alt={order.product.name} class="order-image" />
+<div class="order-wrapper">
+	<span use:tooltip={{ text: 'Quantidade' }} class="order-amount">{order.amount}</span>
+	<div class="img-wrapper">
+		<img src={order.product.imageUrl} alt={order.product.name} />
+	</div>
 	<div class="order-body">
-		<h5 class="order-name">{order.product.name}</h5>
-		<p class="card-description">
-			{fmt.format(order.product.price * order.amount)} <br />
-		</p>
+		<div class="order-name">{order.product.name}</div>
+		<p>{fmt.format(order.product.price * order.amount)}</p>
 		<div class="tag-group">
 			<span class="tag">#{order.product.tag.title}</span>
 			<span class="tag">{orderStatusMap.get(order.status)}</span>
@@ -54,7 +54,7 @@
 						class="button salmon"
 						use:tooltip={{ text: 'Cancelar' }}
 					>
-						<i class="fa fa-cancel" />
+						<i class="fa fa-{order.status === 'PENDING' ? 'trash' : 'x'}" />
 					</button>
 				{/if}
 			</form>
@@ -63,18 +63,16 @@
 </div>
 
 <style>
-	.order {
+	.order-wrapper {
 		display: flex;
-		flex-direction: column;
 		border: 4px var(--gray) solid;
 		border-radius: 24px;
 		overflow: visible;
 		position: relative;
-		width: clamp(25%, 300px, 100% - 1rem);
 	}
 
-	.order-image {
-		border-radius: 20px 20px 0 0;
+	.img-wrapper img {
+		border-radius: 20px 0 0 20px;
 	}
 
 	.order-body {
@@ -84,7 +82,7 @@
 	}
 
 	.order-name {
-		font-size: 20px;
+		font-size: 24px;
 		font-weight: 600;
 	}
 
@@ -100,9 +98,5 @@
 		justify-content: center;
 		align-items: center;
 		border-radius: 50%;
-	}
-
-	.button-group {
-		margin-top: auto;
 	}
 </style>

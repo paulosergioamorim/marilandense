@@ -2,15 +2,16 @@ version: '3.9'
 services:
   db:
     image: postgres
-    environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: marilandense
     ports:
       - 5432:5432
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
   app:
-    build: .
+    build: marilandense
     ports:
       - 3000:3000
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/marilandense
-      JWT_SECRET_KEY: 7524G98DSAY21BBUI78SART78F1VERFHW8Y8FHSD8HF23H9F09HE90HF98
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
