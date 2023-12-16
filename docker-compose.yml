@@ -2,16 +2,18 @@ version: '3.9'
 services:
   db:
     image: postgres
+    container_name: db
     ports:
       - 5432:5432
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_DB: marilandense
   app:
     image: 50021072/marilandense
+    container_name: app
     ports:
       - 3000:3000
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB}
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/marilandense
       JWT_SECRET_KEY: ${JWT_SECRET_KEY}

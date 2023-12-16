@@ -38,6 +38,8 @@
 	<div class="flex-wrapper">
 		{#each data.products as product}
 			<ProductCard {product} />
+		{:else}
+			<img src="/empty.gif" alt="no products" />
 		{/each}
 	</div>
 </section>

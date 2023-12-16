@@ -3,7 +3,7 @@ node_modules
 /build
 /.svelte-kit
 /package
-/static/products
+/static/images/products
 .env
 .env.*
 !.env.example

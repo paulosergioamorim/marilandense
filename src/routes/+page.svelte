@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { ProductCard } from '$lib/components';
 	import type { PageData } from './$types';
-	import type { Product } from '@prisma/client';
 
 	export let data: PageData;
 </script>
@@ -20,6 +19,8 @@
 	<div class="flex-wrapper">
 		{#each data.products as product}
 			<ProductCard {product} />
+		{:else}
+			<img src="/empty.gif" alt="no products">
 		{/each}
 	</div>
 </section>
