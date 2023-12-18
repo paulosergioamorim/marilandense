@@ -20,7 +20,7 @@
 		{#each data.products as product}
 			<ProductCard {product} />
 		{:else}
-			<img src="/empty.gif" alt="no products">
+			<div class="text-center">Não há produtos</div>
 		{/each}
 	</div>
 </section>

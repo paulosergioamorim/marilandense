@@ -17,6 +17,8 @@
 	<div class="flex-wrapper">
 		{#each data.shop.products as product}
 			<ProductCard {product} />
+		{:else}
+			<div class="text-center">Não há produtos</div>
 		{/each}
 	</div>
 </section>
