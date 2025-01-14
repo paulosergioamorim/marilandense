@@ -11,7 +11,7 @@
 	},
 	"devDependencies": {
 		"@fontsource/montserrat": "^4.5.10",
-		"@sveltejs/kit": "^1.20.4",
+		"@sveltejs/kit": "^1.30.4",
 		"@types/bcryptjs": "^2.4.4",
 		"@types/bootstrap": "^5.2.7",
 		"@types/cookie": "^0.5.1",
